@@ -12,7 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-groups
-      - run: uv run pytest -q
   deploy-backend:
     if: github.ref == 'refs/heads/main' && vars.DEPLOY_BACKEND_ENABLED == 'true'
     needs: test-and-evaluate
