@@ -1,0 +1,4 @@
+Employee ID,First Name,Last Name,Email Address,Dept,Start Date,Salary
+EMP-001,Ada,Lovelace,ADA@EXAMPLE.COM,Engineering,2023-01-15,130000
+EMP-002,Grace,Hopper,grace@example.com,Platform,15/02/2022,135000
+EMP-004,Linus,Torvalds,linus@example.com,Engineering,2021-05-01,140000

@@ -1,0 +1,26 @@
+name: Backend CI and evaluation gate
+on:
+  pull_request:
+    paths: ["backend/**", "data/**", "evals/**", "pyproject.toml"]
+  push:
+    branches: [main]
+    paths: ["backend/**", "data/**", "evals/**", "pyproject.toml"]
+jobs:
+  test-and-evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-groups
+      - run: uv run pytest -q
+  deploy-backend:
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_BACKEND_ENABLED == 'true'
+    needs: test-and-evaluate
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy backend
+        env:
+          DEPLOY_COMMAND: ${{ secrets.DEPLOY_BACKEND_COMMAND }}
+        run: test -n "$DEPLOY_COMMAND" && bash -lc "$DEPLOY_COMMAND"

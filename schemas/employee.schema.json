@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "employee.schema.json",
+  "title": "Employee migration target schema",
+  "description": "Canonical target contract for employee migrations. x-source-aliases guide the agent but do not bypass its evaluator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["employee_id", "first_name", "last_name", "email", "start_date"],
+  "properties": {
+    "employee_id": {"type": "string", "minLength": 1, "description": "Stable employee identifier.", "x-source-aliases": ["employeeid", "empid", "staffid", "id"]},
+    "first_name": {"type": "string", "minLength": 1, "x-source-aliases": ["firstname", "givenname", "first"]},
+    "last_name": {"type": "string", "minLength": 1, "x-source-aliases": ["lastname", "surname", "familyname", "last"]},
+    "email": {"type": "string", "format": "email", "x-source-aliases": ["email", "emailaddress", "workemail"]},
+    "department": {"type": "string", "x-source-aliases": ["department", "dept", "team"]},
+    "job_title": {"type": "string", "x-source-aliases": ["jobtitle", "title", "role", "designation"]},
+    "start_date": {"type": "string", "format": "date", "x-source-aliases": ["startdate", "hiredate", "joiningdate", "datejoined"]},
+    "phone": {"type": "string", "x-source-aliases": ["phone", "mobile", "telephone"]}
+  }
+}

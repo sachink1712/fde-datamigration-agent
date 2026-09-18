@@ -1,0 +1,24 @@
+name: Frontend CI and deploy
+on:
+  pull_request:
+    paths: ["apps/web/**"]
+  push:
+    branches: [main]
+    paths: ["apps/web/**"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: test -f apps/web/index.html && test -f apps/web/app.js
+  deploy-frontend:
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_FRONTEND_ENABLED == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy frontend
+        env:
+          DEPLOY_COMMAND: ${{ secrets.DEPLOY_FRONTEND_COMMAND }}
+        run: test -n "$DEPLOY_COMMAND" && bash -lc "$DEPLOY_COMMAND"
