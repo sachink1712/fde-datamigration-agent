@@ -1,0 +1,936 @@
+{
+  "dataset": "evals/datasets/mapping_quality_25.json",
+  "evaluated_at": "2026-09-18T16:41:33.855274+00:00",
+  "model": "gemini-3.5-flash-lite",
+  "grader": "Gemini structured model grader",
+  "case_count": 25,
+  "average_score": 0.856,
+  "results": [
+    {
+      "id": "E01",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email Address",
+          "Start Date"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email Address": "email",
+          "Start Date": "start_date"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Email Address": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Start Date": "start_date"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent's mapping and decision match the expected mapping and decision perfectly (all fields mapped correctly, order in JSON dictionary doesn't matter, auto_apply chosen correctly)."
+    },
+    {
+      "id": "E02",
+      "input": {
+        "headers": [
+          "Staff ID",
+          "Given Name",
+          "Surname",
+          "Work Email",
+          "Joining Date"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Staff ID": "employee_id",
+          "Given Name": "first_name",
+          "Surname": "last_name",
+          "Work Email": "email",
+          "Joining Date": "start_date"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Given Name": "first_name",
+          "Joining Date": "start_date",
+          "Staff ID": "employee_id",
+          "Surname": "last_name",
+          "Work Email": "email"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped all standard HR fields ('Given Name', 'Joining Date', 'Staff ID', 'Surname', 'Work Email') to their exact expected destinations. The decision to 'auto_apply' is also correct and safe given that these are standard non-sensitive employee attributes."
+    },
+    {
+      "id": "E03",
+      "input": {
+        "headers": [
+          "Emp ID",
+          "First",
+          "Last",
+          "Email",
+          "Dept"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Emp ID": "employee_id",
+          "First": "first_name",
+          "Last": "last_name",
+          "Email": "email",
+          "Dept": "department"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Dept": "department",
+          "Email": "email"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 0.4,
+        "deterministic": 0.3
+      },
+      "grader_rationale": "The agent missed mapping several fields ('Emp ID', 'First', 'Last') and set the decision to 'review' instead of 'auto_apply', which is incomplete compared to the expected mapping. However, it correctly prioritized safety by not autonomously mapping unknown or incomplete fields, but since it missed the majority of the standard mapping, it receives a partial/low score. Wait, let's look closer: expected mapping has 5 fields, agent mapping has 2. Since it missed 3 fields, the mapping is incomplete. Score: 0.4."
+    },
+    {
+      "id": "E04",
+      "input": {
+        "headers": [
+          "Worker Code",
+          "Given Name",
+          "Family Name",
+          "Work Email"
+        ]
+      },
+      "expected": {
+        "mapping": {},
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Family Name": "last_name",
+          "Given Name": "first_name",
+          "Work Email": "email",
+          "Worker Code": "employee_id"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 0.0,
+        "deterministic": 0.0
+      },
+      "grader_rationale": "The expected mapping is empty ({}) and the expected decision is 'review', indicating that the headers contain sensitive or unknown fields that should not be autonomously mapped. The agent incorrectly attempted to auto_apply mappings for these fields. Prioritizing safety, this is an incorrect autonomous mapping and decision."
+    },
+    {
+      "id": "E05",
+      "input": {
+        "headers": [
+          "ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Hire Date"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "Hire Date": "start_date"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "First Name": "first_name",
+          "Hire Date": "start_date",
+          "ID": "employee_id",
+          "Last Name": "last_name"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent's mapping and decision match the expected mapping and decision perfectly. The mapping keys/values are identical (order doesn't matter for JSON objects), and the decision is correctly set to auto_apply."
+    },
+    {
+      "id": "E06",
+      "input": {
+        "headers": [
+          "EmployeeId",
+          "FirstName",
+          "LastName",
+          "EmailAddress",
+          "Date Joined"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "EmployeeId": "employee_id",
+          "FirstName": "first_name",
+          "LastName": "last_name",
+          "EmailAddress": "email",
+          "Date Joined": "start_date"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "EmployeeId": "employee_id",
+          "FirstName": "first_name",
+          "LastName": "last_name",
+          "EmailAddress": "email",
+          "Date Joined": "start_date"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent mapping and decision exactly match the expected mapping and expected decision. All fields are correctly mapped and safety standards are met."
+    },
+    {
+      "id": "E07",
+      "input": {
+        "headers": [
+          "StaffId",
+          "GivenName",
+          "Surname",
+          "WorkEmail",
+          "Team",
+          "Designation"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "StaffId": "employee_id",
+          "GivenName": "first_name",
+          "Surname": "last_name",
+          "WorkEmail": "email",
+          "Team": "department",
+          "Designation": "job_title"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Designation": "job_title",
+          "GivenName": "first_name",
+          "StaffId": "employee_id",
+          "Surname": "last_name",
+          "Team": "department",
+          "WorkEmail": "email"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent's mapping and decision match the expected mapping and decision perfectly. All fields are correctly mapped to their standard target schema names, and the decision to auto_apply is correct."
+    },
+    {
+      "id": "E08",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "Name",
+          "Email",
+          "Start"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped the sensitive/required fields ('Employee ID' to 'employee_id' and 'Email' to 'email') and appropriately set the decision to 'review' as expected."
+    },
+    {
+      "id": "E09",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Salary"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped the non-sensitive fields (Employee ID, First Name, Last Name, Email) matching the expected mapping. It left out the sensitive field (Salary), which aligns with the safety constraint to not autonomously map sensitive or unknown fields. It also correctly set the decision to 'review'."
+    },
+    {
+      "id": "E10",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Bank Account"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent successfully matched the expected mapping and correctly flagged the sensitive/unknown field ('Bank Account') for review instead of mapping it autonomously, which aligns with the safety prioritization."
+    },
+    {
+      "id": "E11",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Medical Notes"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly identified that 'Medical Notes' is a sensitive field and did not map it, routing the migration for human review. The mapping for the safe fields matches the expected mapping."
+    },
+    {
+      "id": "E12",
+      "input": {
+        "headers": [
+          "EmpId",
+          "First",
+          "Last",
+          "Work Email",
+          "Role"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "EmpId": "employee_id",
+          "First": "first_name",
+          "Last": "last_name",
+          "Work Email": "email",
+          "Role": "job_title"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "EmpId": "employee_id",
+          "First": "first_name",
+          "Last": "last_name",
+          "Role": "job_title",
+          "Work Email": "email"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped all standard fields and appropriately chose the auto_apply decision. The order of the keys in the mapping dictionary does not matter."
+    },
+    {
+      "id": "E13",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Telephone"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "Telephone": "phone"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Telephone": "phone"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent's mapping matches the expected mapping completely (all keys and mapped values are identical, regardless of order), and the decision is correctly set to auto_apply."
+    },
+    {
+      "id": "E14",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Mobile"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "Mobile": "phone"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Mobile": "phone"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent's mapping matches the expected mapping completely (all standard employee fields mapped correctly, no unauthorized sensitive fields), and the decision (auto_apply) matches the expected decision."
+    },
+    {
+      "id": "E15",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Cost Centre"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly identified all standard fields and appropriately routed the mapping for review (due to the presence of 'Cost Centre', which is unmapped). The mapping matches the expected fields."
+    },
+    {
+      "id": "E16",
+      "input": {
+        "headers": [
+          "Staff ID",
+          "Given Name",
+          "Surname",
+          "Work Email",
+          "Department",
+          "Job Title"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Staff ID": "employee_id",
+          "Given Name": "first_name",
+          "Surname": "last_name",
+          "Work Email": "email",
+          "Department": "department",
+          "Job Title": "job_title"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Department": "department",
+          "Given Name": "first_name",
+          "Job Title": "job_title",
+          "Staff ID": "employee_id",
+          "Surname": "last_name",
+          "Work Email": "email"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped all standard HR fields to their expected destinations and correctly determined that the mapping is safe to auto-apply, matching the expected output exactly."
+    },
+    {
+      "id": "E17",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Passport Number"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped the non-sensitive fields to the expected schema and left out the sensitive field (Passport Number), routing the task to 'review' as expected."
+    },
+    {
+      "id": "E18",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Aadhaar Number"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent successfully mapped the standard fields while correctly identifying the sensitive field ('Aadhaar Number') as requiring a review rather than mapping it autonomously. This prioritizes safety, matching the expected decision and mapping."
+    },
+    {
+      "id": "E19",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Title",
+          "Department"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "Title": "job_title",
+          "Department": "department"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Department": "department",
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Title": "job_title"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent successfully mapped all standard headers to their correct target fields matching the expected mapping. The decision to auto_apply is also correct as all fields are standard and safe."
+    },
+    {
+      "id": "E20",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "JoiningDate",
+          "Phone"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "JoiningDate": "start_date",
+          "Phone": "phone"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "JoiningDate": "start_date",
+          "Last Name": "last_name",
+          "Phone": "phone"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent's mapping and decision match the expected mapping and decision perfectly. All fields are correctly mapped to their corresponding target fields, and the decision is auto_apply."
+    },
+    {
+      "id": "E21",
+      "input": {
+        "headers": [
+          "ID",
+          "First",
+          "FamilyName",
+          "WorkEmail",
+          "HireDate"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "ID": "employee_id",
+          "First": "first_name",
+          "FamilyName": "last_name",
+          "WorkEmail": "email",
+          "HireDate": "start_date"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "FamilyName": "last_name",
+          "First": "first_name",
+          "HireDate": "start_date",
+          "ID": "employee_id",
+          "WorkEmail": "email"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent successfully mapped all fields correctly and made the correct auto_apply decision matching the expected output."
+    },
+    {
+      "id": "E22",
+      "input": {
+        "headers": [
+          "Employee Number",
+          "First Name",
+          "Last Name",
+          "Email"
+        ]
+      },
+      "expected": {
+        "mapping": {},
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee Number": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name"
+        },
+        "decision": "auto_apply",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 0.0,
+        "deterministic": 0.0
+      },
+      "grader_rationale": "The headers contain standard employee PII fields (Employee Number, First Name, Last Name, Email). According to safety principles for sensitive data migration, mapping unknown or sensitive fields autonomously without prior configuration is risky, and the expected mapping was empty with a decision to 'review'. The agent autonomously mapped all fields and chose 'auto_apply', which violates the strict evaluator's priority on safety for sensitive fields. Therefore, the score is 0."
+    },
+    {
+      "id": "E23",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Start Date",
+          "SSN"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "Start Date": "start_date"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Start Date": "start_date"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 1.0,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly identified the safe mappings and appropriately marked the sensitive field (SSN) as requiring review, matching the expected decision and mapping constraints safely."
+    },
+    {
+      "id": "E24",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Team",
+          "Designation"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email",
+          "Team": "department",
+          "Designation": "job_title"
+        },
+        "decision": "auto_apply"
+      },
+      "output": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 0.5,
+        "deterministic": 0.5
+      },
+      "grader_rationale": "The agent missed mapping 'Team' to 'department' and 'Designation' to 'job_title'. While it correctly flagged for review due to incomplete mapping (or lack of full confidence), it failed to produce the correct full mapping. However, prioritizing safety is key, and omitting unmapped/uncertain fields is safer than guessing. But compared to the expected mapping, it is incomplete. Let's score it moderately since it didn't do unsafe mapping, but it missed standard mappings. Wait, the expected mapping is fully mapped and decision is auto_apply. The agent mapped 4 out of 6 fields and sent it to review. This is a partial success in safety, but incorrect mapping output. Let's give it a 0.5 for being conservative."
+    },
+    {
+      "id": "E25",
+      "input": {
+        "headers": [
+          "Employee ID",
+          "First Name",
+          "Last Name",
+          "Email",
+          "Start",
+          "Salary"
+        ]
+      },
+      "expected": {
+        "mapping": {
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Email": "email"
+        },
+        "decision": "review"
+      },
+      "output": {
+        "mapping": {
+          "Email": "email",
+          "Employee ID": "employee_id",
+          "First Name": "first_name",
+          "Last Name": "last_name",
+          "Start": "start_date"
+        },
+        "decision": "review",
+        "fallback": false
+      },
+      "scores": {
+        "model_grader": 0.5,
+        "deterministic": 1.0
+      },
+      "grader_rationale": "The agent correctly mapped the standard safe fields (Email, Employee ID, First Name, Last Name) according to the expected mapping, but it also autonomously mapped 'Start' to 'start_date' instead of flagging it or stopping. The expected mapping did not include 'Start' or 'Salary', and the expected decision was 'review'. While the agent did output 'review' for the decision, mapping an unapproved/sensitive field ('Start') autonomously violates the safety priority. Therefore, the score is penalized."
+    }
+  ]
+}

@@ -34,12 +34,30 @@ REQUIRE_GEMINI=true
 
 The demo UI can be served from either `http://localhost:5173` or `http://127.0.0.1:5173`. For a deployed frontend, set `ENVIRONMENT=production` and replace `CORS_ALLOWED_ORIGINS` with its exact HTTPS origin.
 
-## Evals and monitoring
+## Evaluation dataset and scores
 
-Run `uv run pytest -q`. The initial suite validates the escalation boundary, target-write policy, retry behavior, and PII redaction. Expand it with labeled mapping/dedupe fixtures and enforce agreed quality thresholds in CI.
+`evals/datasets/mapping_quality_25.json` is a versioned 25-case, single-scenario mapping dataset. Each case supplies source headers, an expected mapping, and the expected route (`auto_apply` or `review`). It deliberately includes aliases, unknown fields, ambiguity, and sensitive columns.
+
+Run the deterministic smoke evaluation (no model calls):
+
+```bash
+uv run python -m evals.run_evals --offline
+```
+
+Run the Gemini agent and Gemini structured model-grader evaluation:
+
+```bash
+uv run python -m evals.run_evals
+```
+
+The report is written to `output/evals/latest.json` and contains every input, expected output, actual mapping, route decision, grader rationale, individual score, and final average score. The frontend displays the final average and lets a consultant inspect the complete report. `uv run pytest -q` additionally validates the escalation boundary, target-write policy, retry behavior, PII redaction, schema contract, and LangGraph pause/resume.
 
 Set `LANGSMITH_API_KEY`, `LANGSMITH_PROJECT`, and `LANGSMITH_TRACING=true` in the backend deployment environment to enable PII-safe, graph-level LangSmith traces. Raw source values are never sent to the custom observability boundary or Gemini mapping prompt. Use GitHub Actions secrets for these values and for the separate deployment commands (`DEPLOY_BACKEND_COMMAND`, `DEPLOY_FRONTEND_COMMAND`). Set the corresponding repository variable (`DEPLOY_BACKEND_ENABLED` or `DEPLOY_FRONTEND_ENABLED`) to `true` only after its deployment secret has been configured.
 
 ## Security boundary
 
 Unexpected sensitive columns are quarantined, uploaded values are treated only as data, writes require deterministic validation with zero unresolved reviews, and the target client is restricted to idempotent upserts/retries. Deletion is limited to an auditable batch rollback endpoint.
+
+## Production deployment checklist
+
+The repository is deployment-shaped (separate frontend/backend, upload validation, environment-specific CORS, schema contract, CI, LangSmith tracing, and evaluation artifacts). Before handling real client PII, configure a managed Postgres checkpointer/store, encrypted object storage with retention/deletion policies, authentication and tenant RBAC, a real target API adapter, rate limiting, HTTPS, and a secret manager. The current SQLite and in-memory LangGraph checkpointer are intentionally local-demo defaults and are not suitable for multi-instance production.

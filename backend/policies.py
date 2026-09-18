@@ -11,7 +11,7 @@ SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "employee.schema
 TARGET_SCHEMA = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
 
 PII_FIELDS = {"first_name", "last_name", "email", "phone", "employee_id"}
-SENSITIVE_SOURCE_TOKENS = {"salary", "bank", "iban", "ssn", "aadhaar", "medical", "health", "passport"}
+SENSITIVE_SOURCE_TOKENS = {"salary", "ctc", "compensation", "bank", "iban", "ssn", "aadhaar", "medical", "health", "passport"}
 REQUIRED_FIELDS = set(TARGET_SCHEMA["required"])
 
 
@@ -20,6 +20,7 @@ def normalize_header(value: str) -> str:
 
 
 ALIASES = {field: set(spec.get("x-source-aliases", [])) for field, spec in TARGET_SCHEMA["properties"].items()}
+COMPOSITE_SOURCE_ALIASES = {"fullname", "employeename", "name"}
 
 
 def classify_header(header: str) -> str:

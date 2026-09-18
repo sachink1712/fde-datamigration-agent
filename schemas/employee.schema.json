@@ -13,7 +13,12 @@
     "email": {"type": "string", "format": "email", "x-source-aliases": ["email", "emailaddress", "workemail"]},
     "department": {"type": "string", "x-source-aliases": ["department", "dept", "team"]},
     "job_title": {"type": "string", "x-source-aliases": ["jobtitle", "title", "role", "designation"]},
-    "start_date": {"type": "string", "format": "date", "x-source-aliases": ["startdate", "hiredate", "joiningdate", "datejoined"]},
-    "phone": {"type": "string", "x-source-aliases": ["phone", "mobile", "telephone"]}
+    "start_date": {"type": "string", "format": "date", "x-source-aliases": ["startdate", "hiredate", "joiningdate", "joiningdt", "datejoined"]},
+    "phone": {"type": "string", "x-source-aliases": ["phone", "mobile", "telephone", "contact"]},
+    "date_of_birth": {"type": "string", "format": "date", "x-source-aliases": ["dob", "birthdate", "dateofbirth"]},
+    "manager_employee_id": {"type": "string", "x-source-aliases": ["reportsto", "managerid", "manageremployeeid"]},
+    "location": {"type": "string", "x-source-aliases": ["location", "worklocation", "city"]},
+    "employment_status": {"type": "string", "enum": ["active", "resigned", "terminated", "on_leave"], "x-source-aliases": ["status", "employmentstatus"]},
+    "end_date": {"type": "string", "format": "date", "x-source-aliases": ["enddate", "terminationdate", "lastworkingdate"]}
   }
 }

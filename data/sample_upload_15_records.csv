@@ -1,0 +1,16 @@
+Employee ID,First Name,Last Name,Email Address,Dept,Start,Designation
+EMP-101,  Ada ,Lovelace,ADA.LOVELACE@EXAMPLE.COM,Engineering,2023-01-15,Principal Engineer
+EMP-102,Grace,Hopper,grace.hopper@example.com,Platform,15/02/2022,Admiral
+EMP-103,Alan,Turing,alan.turing@example.com,Research,03/04/2020,Scientist
+EMP-104,Katherine,Johnson,KATHERINE.JOHNSON@EXAMPLE.COM,Analytics,2021-11-08,Data Scientist
+EMP-105,Donald,Knuth,donald.knuth@example.com,Research,08/12/2019,Research Fellow
+EMP-106,Margaret,Hamilton,margaret.hamilton@example.com,Engineering,2018-07-20,Software Engineer
+EMP-107,Tim,Berners-Lee,tim.bernerslee@example.com,Platform,20/06/2017,Architect
+EMP-108,Radia,Perlman,radia.perlman@example.com,Infrastructure,2016-02-29,Network Engineer
+EMP-109,Barbara,Liskov,barbara.liskov@example.com,Engineering,01/03/2015,Distinguished Engineer
+EMP-110,James,Gosling,james.gosling@example.com,Platform,2014-10-11,Software Architect
+EMP-111,Frances,Allen,frances.allen@example.com,Research,11/10/2013,Compiler Engineer
+EMP-112,Edsger,Dijkstra,edsger.dijkstra@example.com,Research,2012-05-01,Principal Scientist
+EMP-113,Guido,van Rossum,guido.vanrossum@example.com,Platform,05/06/2011,Language Engineer
+EMP-114,Linus,Torvalds,linus.torvalds@example.com,Engineering,2010-09-14,Systems Engineer
+EMP-101,Ada,Lovelace,ada.lovelace@example.com,Engineering,2023-01-15,Principal Engineer
