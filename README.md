@@ -96,6 +96,12 @@ The classifier and cleaner are generator agents. A strict validator evaluates th
 
 The health check is available at [http://localhost:8000/health](http://localhost:8000/health).
 
+### Live demo
+
+Open the deployed web application at [https://fde-datamigration-agent.vercel.app/](https://fde-datamigration-agent.vercel.app/).
+
+> The API is deployed on Render's free tier. If it is initially unavailable, its resources may be unallocated; wait briefly and try again while the service starts.
+
 ### Running without a Gemini key
 
 Relay starts safely without `GEMINI_API_KEY`. The cleaner uses a schema-driven deterministic plan, but automatic source-column classification cannot be completed and is routed safely instead of guessed. A Gemini key is needed for regular automatic mapping.
