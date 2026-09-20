@@ -1,0 +1,587 @@
+[
+  {
+    "id": "VC01",
+    "name": "all_correct",
+    "description": "Every mapping is right: the validator must not raise false alarms.",
+    "file": "hr_a.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Full Name": [
+        "Asha Rao",
+        "Vikram Singh",
+        "Priya Nair",
+        "Karthik Raj"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ],
+      "Phone": [
+        "9845012345",
+        "9845012346",
+        "9845012347",
+        "9845012348"
+      ],
+      "Joined": [
+        "03-Feb-2019",
+        "14/07/2020",
+        "21/11/2019",
+        "05/01/2020"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Full Name": {
+        "target_field": "first_name",
+        "transform": "split_full_name",
+        "confidence": 0.96
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      },
+      "Phone": {
+        "target_field": "phone",
+        "transform": "direct",
+        "confidence": 0.95
+      },
+      "Joined": {
+        "target_field": "start_date",
+        "transform": "direct",
+        "confidence": 0.94
+      }
+    },
+    "expected_flagged": [],
+    "requires_llm": false
+  },
+  {
+    "id": "VC02",
+    "name": "sensitive_column_mapped",
+    "description": "Government-ID and bank columns proposed as real fields (must be rejected outright).",
+    "file": "hr_b.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Aadhaar No": [
+        "2345 6789 0123",
+        "3456 7890 1234",
+        "4567 8901 2345",
+        "5678 9012 3456"
+      ],
+      "Bank Account No": [
+        "001234567890",
+        "001234567891",
+        "001234567892",
+        "001234567893"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Aadhaar No": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Bank Account No": {
+        "target_field": "annual_salary",
+        "transform": "direct",
+        "confidence": 0.91
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Aadhaar No",
+      "Bank Account No"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC03",
+    "name": "fullname_mapped_direct",
+    "description": "'Full Name' mapped straight to first_name would silently lose every family name.",
+    "file": "hr_c.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Full Name": [
+        "Asha Rao",
+        "Vikram Singh",
+        "Priya Nair",
+        "Karthik Raj"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Full Name": {
+        "target_field": "first_name",
+        "transform": "direct",
+        "confidence": 0.95
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Full Name"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC04",
+    "name": "values_do_not_fit_target",
+    "description": "Header/target mismatch caught only by looking at the values (phone numbers -> date_of_birth, department names -> phone).",
+    "file": "hr_d.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Contact": [
+        "9845012345",
+        "9845012346",
+        "9845012347",
+        "9845012348"
+      ],
+      "Joined": [
+        "Engineering",
+        "Sales",
+        "Finance",
+        "Design"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Contact": {
+        "target_field": "date_of_birth",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Joined": {
+        "target_field": "phone",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Contact",
+      "Joined"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC05",
+    "name": "two_columns_same_target",
+    "description": "'Email' and 'Alt Email' both mapped to email in one file: the second must be flagged.",
+    "file": "hr_e.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ],
+      "Alt Email": [
+        "a@home.com",
+        "b@home.com",
+        "c@home.com",
+        "d@home.com"
+      ],
+      "Phone": [
+        "9845012345",
+        "9845012346",
+        "9845012347",
+        "9845012348"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      },
+      "Alt Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Phone": {
+        "target_field": "phone",
+        "transform": "direct",
+        "confidence": 0.95
+      }
+    },
+    "expected_flagged": [
+      "Alt Email"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC06",
+    "name": "invalid_transform_pairing",
+    "description": "Transform/target combinations the pipeline cannot honour (split_full_name -> last_name, monthly_to_annual -> start_date).",
+    "file": "hr_f.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Name": [
+        "Asha Rao",
+        "Vikram Singh",
+        "Priya Nair",
+        "Karthik Raj"
+      ],
+      "Pay": [
+        "45000",
+        "52000",
+        "38000",
+        "61000"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Name": {
+        "target_field": "last_name",
+        "transform": "split_full_name",
+        "confidence": 0.9
+      },
+      "Pay": {
+        "target_field": "start_date",
+        "transform": "monthly_to_annual",
+        "confidence": 0.9
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Name",
+      "Pay"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC07",
+    "name": "invented_field_and_low_confidence",
+    "description": "Non-schema target, sub-threshold confidence, and a low-confidence 'ignore' must all go back / to a human.",
+    "file": "hr_g.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Team": [
+        "Blue",
+        "Red",
+        "Blue",
+        "Green"
+      ],
+      "Grade": [
+        "G7",
+        "G9",
+        "G5",
+        "G8"
+      ],
+      "Age": [
+        "34",
+        "41",
+        "27",
+        "38"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Team": {
+        "target_field": "team_name",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Grade": {
+        "target_field": "job_title",
+        "transform": "direct",
+        "confidence": 0.55
+      },
+      "Age": {
+        "target_field": null,
+        "transform": "ignore",
+        "confidence": 0.4
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Age",
+      "Grade",
+      "Team"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC08",
+    "name": "non_unique_employee_id",
+    "description": "A column claimed to be the employee id holds duplicates.",
+    "file": "hr_h.csv",
+    "columns": {
+      "Emp Code": [
+        "E1",
+        "E1",
+        "E2",
+        "E1"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ],
+      "Joined": [
+        "03-Feb-2019",
+        "14/07/2020",
+        "21/11/2019",
+        "05/01/2020"
+      ]
+    },
+    "proposed": {
+      "Emp Code": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.93
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      },
+      "Joined": {
+        "target_field": "start_date",
+        "transform": "direct",
+        "confidence": 0.94
+      }
+    },
+    "expected_flagged": [
+      "Emp Code"
+    ],
+    "requires_llm": false
+  },
+  {
+    "id": "VC09",
+    "name": "semantically_wrong_but_plausible_shape",
+    "description": "Text columns swapped between department and location. Only a semantic critic can catch this (LLM required).",
+    "file": "hr_i.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Business Unit": [
+        "Retail",
+        "Wholesale",
+        "Online",
+        "Retail"
+      ],
+      "Office City": [
+        "Pune",
+        "Chennai",
+        "Kochi",
+        "Pune"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Business Unit": {
+        "target_field": "location",
+        "transform": "direct",
+        "confidence": 0.92
+      },
+      "Office City": {
+        "target_field": "department",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Business Unit",
+      "Office City"
+    ],
+    "requires_llm": true
+  },
+  {
+    "id": "VC10",
+    "name": "joining_date_as_end_date",
+    "description": "Joining dates mapped to end_date; a title column mapped to department (LLM required).",
+    "file": "hr_j.csv",
+    "columns": {
+      "Emp ID": [
+        "E101",
+        "E102",
+        "E103",
+        "E104"
+      ],
+      "Joining Date": [
+        "03-Feb-2019",
+        "14/07/2020",
+        "21/11/2019",
+        "05/01/2020"
+      ],
+      "Designation": [
+        "Engineer",
+        "Sales Lead",
+        "Recruiter",
+        "Analyst"
+      ],
+      "Email": [
+        "a@x.com",
+        "b@x.com",
+        "c@x.com",
+        "d@x.com"
+      ]
+    },
+    "proposed": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct",
+        "confidence": 0.97
+      },
+      "Joining Date": {
+        "target_field": "end_date",
+        "transform": "direct",
+        "confidence": 0.93
+      },
+      "Designation": {
+        "target_field": "department",
+        "transform": "direct",
+        "confidence": 0.9
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct",
+        "confidence": 0.98
+      }
+    },
+    "expected_flagged": [
+      "Designation",
+      "Joining Date"
+    ],
+    "requires_llm": true
+  }
+]

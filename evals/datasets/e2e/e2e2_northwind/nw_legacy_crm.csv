@@ -1,0 +1,8 @@
+Emp Ref,Surname,Forename,Date of Birth,Phone,Salary (annual),Joined,Position
+E201,Kapoor,Neha,1984-02-20,+91 98100 20101,"₹18,00,000",11/04/2016,Operations Head
+E202,Sen,Rohit,1989-07-07,9810020202,"12,00,000",12/09/2018,Manager
+E203,Das,Tina,1993-03-03,098100-20303,"9,00,000",14/01/2019,Analyst
+E204,Nair,Uday,1987-11-11,+91 (98100) 20404,"11,00,000",06/05/2017,Supervisor
+E205,Joseph,Vera,1991-01-19,98100 20505,950000,24/08/2020,Coordinator
+E206,Cole,Wade,1990-06-06,9810020606,"8,70,000",01/02/2021,Executive
+E216,User,Test,1900-01-01,9999999999,100000,01/01/1900,Test

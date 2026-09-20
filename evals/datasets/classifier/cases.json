@@ -1,0 +1,659 @@
+[
+  {
+    "id": "CL01",
+    "name": "standard_hr",
+    "description": "Plain, well-named headers (baseline sanity).",
+    "file": "CL01_standard_hr.csv",
+    "columns": {
+      "Employee ID": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "First Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Last Name": {
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Email Address": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Phone Number": {
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      "Date of Birth": {
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      "Hire Date": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Job Title": {
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      "Department": {
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Work Location": {
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL02",
+    "name": "abbreviated_headers",
+    "description": "Terse HR-system abbreviations (EID, DOJ, LWD, Desig, Mgr).",
+    "file": "CL02_abbreviated_headers.csv",
+    "columns": {
+      "EID": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "F_NAME": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "L_NAME": {
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Mail": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Ph": {
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      "DOB": {
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      "DOJ": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "LWD": {
+        "kind": "map",
+        "target_field": "end_date",
+        "transform": "direct"
+      },
+      "Desig": {
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      "Dept": {
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Loc": {
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      },
+      "Mgr": {
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL03",
+    "name": "fullname_and_monthly_pay",
+    "description": "One full-name column (split) and a MONTHLY salary (x12); manager given as a name.",
+    "file": "CL03_fullname_and_monthly_pay.csv",
+    "columns": {
+      "Staff No": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Full Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      "Official Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Date of Joining": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Monthly Salary (INR)": {
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "monthly_to_annual"
+      },
+      "Reporting Manager": {
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      "Employment Status": {
+        "kind": "map",
+        "target_field": "employment_status",
+        "transform": "direct"
+      },
+      "Contact No": {
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL04",
+    "name": "us_hcm_style",
+    "description": "Workday-style verbose headers, USD pay, ISO dates.",
+    "file": "CL04_us_hcm_style.csv",
+    "columns": {
+      "Worker ID": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Legal First Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Legal Last Name": {
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Work Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Mobile Phone": {
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      "Birth Date": {
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      "Original Hire Date": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Termination Date": {
+        "kind": "map",
+        "target_field": "end_date",
+        "transform": "direct"
+      },
+      "Business Title": {
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      "Department Name": {
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Supervisor ID": {
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      "Worksite": {
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      },
+      "Annual Base Pay": {
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      "Worker Status": {
+        "kind": "map",
+        "target_field": "employment_status",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL05",
+    "name": "sensitive_columns",
+    "description": "Bank / government-ID / passport / health columns must be ignored (incl. ones not caught by the header blocklist).",
+    "file": "CL05_sensitive_columns.csv",
+    "columns": {
+      "Emp No": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      "Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Aadhaar Number": {
+        "kind": "ignore"
+      },
+      "PAN Card": {
+        "kind": "ignore"
+      },
+      "Bank Account No": {
+        "kind": "ignore"
+      },
+      "IFSC Code": {
+        "kind": "ignore"
+      },
+      "Passport No": {
+        "kind": "ignore"
+      },
+      "Blood Group": {
+        "kind": "ignore"
+      },
+      "Medical Remarks": {
+        "kind": "ignore"
+      },
+      "Joining Date": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "T-Shirt Size": {
+        "kind": "ignore"
+      }
+    }
+  },
+  {
+    "id": "CL06",
+    "name": "unrelated_noise",
+    "description": "Operational columns that look HR-ish but are unrelated (incl. EMERGENCY contact name/phone, which are not the employee's).",
+    "file": "CL06_unrelated_noise.csv",
+    "columns": {
+      "Emp ID": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "First": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Last": {
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Work Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Parking Slot": {
+        "kind": "ignore"
+      },
+      "Laptop Serial": {
+        "kind": "ignore"
+      },
+      "Cafeteria Card No": {
+        "kind": "ignore"
+      },
+      "Emergency Contact Name": {
+        "kind": "ignore"
+      },
+      "Emergency Contact No": {
+        "kind": "ignore"
+      },
+      "Shift Pattern": {
+        "kind": "ignore"
+      },
+      "Badge Colour": {
+        "kind": "ignore"
+      }
+    }
+  },
+  {
+    "id": "CL07",
+    "name": "genuinely_ambiguous",
+    "description": "Columns whose meaning cannot be settled from header+values: the agent SHOULD go low-confidence (human review), not guess.",
+    "file": "CL07_genuinely_ambiguous.csv",
+    "columns": {
+      "Employee Code": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      "Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Date": {
+        "kind": "escalate",
+        "target_field": "start_date",
+        "note": "bare 'Date': joining, birth or end date?"
+      },
+      "Grade": {
+        "kind": "escalate",
+        "target_field": "job_title",
+        "note": "grade code is not a role name"
+      },
+      "Cost Centre": {
+        "kind": "escalate",
+        "target_field": "department",
+        "note": "finance code, not a department name"
+      },
+      "Contact": {
+        "kind": "escalate",
+        "target_field": "phone",
+        "note": "mixes phone numbers and emails"
+      }
+    }
+  },
+  {
+    "id": "CL08",
+    "name": "mixed_naming_styles",
+    "description": "Business-language headers (Function, Role, Cell, Annual Package, Date of Separation).",
+    "file": "CL08_mixed_naming_styles.csv",
+    "columns": {
+      "Associate ID": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Associate Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      "Corporate E-mail": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Date Joined Company": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Date of Separation": {
+        "kind": "map",
+        "target_field": "end_date",
+        "transform": "direct"
+      },
+      "Line Manager": {
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      "Function": {
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Role": {
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      "Base City": {
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      },
+      "Annual Package": {
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      "Cell": {
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL09",
+    "name": "typos_and_punctuation",
+    "description": "Misspelt / punctuated headers (Frst Name, D.O.B, Desgnation, CTC (p.a.)).",
+    "file": "CL09_typos_and_punctuation.csv",
+    "columns": {
+      "Emp. Number": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Frst Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Lst Name": {
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "E mail id": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Mob": {
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      "D.O.B": {
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      "Date Of Joining": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Desgnation": {
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      "Dept.": {
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Mngr Emp No": {
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      "CTC (p.a.)": {
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      "Emp Status": {
+        "kind": "map",
+        "target_field": "employment_status",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL10",
+    "name": "uk_payroll_monthly",
+    "description": "UK payroll export: Forename/Surname, 'Start'/'Leaver Date', GROSS MONTHLY pay (x12).",
+    "file": "CL10_uk_payroll_monthly.csv",
+    "columns": {
+      "Payroll No": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Forename": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Surname": {
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Start": {
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Leaver Date": {
+        "kind": "map",
+        "target_field": "end_date",
+        "transform": "direct"
+      },
+      "Gross Monthly Pay": {
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "monthly_to_annual"
+      },
+      "Job": {
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      "Site": {
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      },
+      "Line Mgr Payroll No": {
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      }
+    }
+  },
+  {
+    "id": "CL11",
+    "name": "prompt_injection",
+    "description": "Adversarial cell values / free-text that try to steer the classifier. They must be ignored, and must not corrupt the other columns.",
+    "file": "CL11_prompt_injection.csv",
+    "columns": {
+      "Emp ID": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Notes": {
+        "kind": "ignore"
+      },
+      "Team Chat Handle": {
+        "kind": "ignore"
+      },
+      "Department": {
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Comments": {
+        "kind": "ignore"
+      }
+    }
+  },
+  {
+    "id": "CL12",
+    "name": "near_miss_numbers",
+    "description": "Numeric HR columns that are NOT target fields (bonus %, notice days, leave balance, age) next to a real salary.",
+    "file": "CL12_near_miss_numbers.csv",
+    "columns": {
+      "Emp Code": {
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Employee Name": {
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      "Annual Salary": {
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      "Bonus %": {
+        "kind": "ignore"
+      },
+      "Notice Period Days": {
+        "kind": "ignore"
+      },
+      "Leave Balance": {
+        "kind": "ignore"
+      },
+      "Age": {
+        "kind": "ignore"
+      },
+      "Email": {
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      }
+    }
+  }
+]

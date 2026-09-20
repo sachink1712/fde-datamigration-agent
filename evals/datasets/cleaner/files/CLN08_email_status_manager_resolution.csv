@@ -1,0 +1,8 @@
+Emp ID,First,Last,Email,Status,Manager
+E1,Rahul,Mehta,  Rahul.Mehta@Corp.COM ,Active,
+E2,Asha,Rao,mailto:asha.rao@corp.com,ACTIVE,Rahul Mehta
+E3,Vikram,Singh,vikram@corp.com,on leave,e1
+E4,Priya,Nair,priya.nair@corp,On-Leave,"Rao, Asha"
+E5,Karthik,Raj,karthik@corp.com,Resigned,Zed Nobody
+E6,Divya,Menon,divya@corp.com,Inactive,E3
+E7,Meena,Iyer,meena@corp.com,terminated,Karthik Raj

@@ -1,0 +1,2836 @@
+{
+  "final_average_score": 0.9472,
+  "final_average_definition": "unweighted mean of the per-suite scores; each suite score is the unweighted mean of its case scores",
+  "mean_of_all_cases": 0.9592,
+  "suite_scores": {
+    "classifier": 0.9719,
+    "cleaner": 0.997,
+    "validator": 0.952,
+    "e2e": 0.8678
+  },
+  "complete": true,
+  "skipped_suites": {},
+  "meta": {
+    "timestamp": "2026-09-20T17:37:51+00:00",
+    "mode": "live",
+    "model": "gemini-3.5-flash-lite",
+    "harness_self_test_only": false,
+    "pass_threshold": 0.8,
+    "cases_scored": 48,
+    "duration_seconds": 301.0,
+    "python": "3.12.12",
+    "llm_calls": 51,
+    "llm_errors": 0,
+    "llm_retries": 0,
+    "llm_seconds": 75.4,
+    "last_error": ""
+  },
+  "suites": {
+    "classifier": {
+      "label": "Classifier agent (generator 1)",
+      "skipped": false,
+      "score": 0.9719,
+      "cases_scored": 12,
+      "cases_skipped": 0,
+      "cases_passed": 12,
+      "metrics": {
+        "columns_scored": 121,
+        "column_accuracy": 0.9915,
+        "confident_error_rate": 0.0087,
+        "ambiguous_columns_escalated": 0.75,
+        "needless_escalation_rate": 0.0256
+      },
+      "cases": [
+        {
+          "id": "CL01",
+          "name": "standard_hr",
+          "description": "Plain, well-named headers (baseline sanity).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 10,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 10
+            }
+          },
+          "details": [
+            {
+              "header": "Employee ID",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "First Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "first_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Last Name",
+              "gold": "last_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "last_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Email Address",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Phone Number",
+              "gold": "phone",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Date of Birth",
+              "gold": "date_of_birth",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "date_of_birth",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Hire Date",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Job Title",
+              "gold": "job_title",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Department",
+              "gold": "department",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "department",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Work Location",
+              "gold": "location",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "location",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL02",
+          "name": "abbreviated_headers",
+          "description": "Terse HR-system abbreviations (EID, DOJ, LWD, Desig, Mgr).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 12,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 12
+            }
+          },
+          "details": [
+            {
+              "header": "EID",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "F_NAME",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "first_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "L_NAME",
+              "gold": "last_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "last_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Mail",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Ph",
+              "gold": "phone",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "DOB",
+              "gold": "date_of_birth",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "date_of_birth",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "DOJ",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "LWD",
+              "gold": "end_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "end_date",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Desig",
+              "gold": "job_title",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Dept",
+              "gold": "department",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "department",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Loc",
+              "gold": "location",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "location",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Mgr",
+              "gold": "manager_employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "manager_employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL03",
+          "name": "fullname_and_monthly_pay",
+          "description": "One full-name column (split) and a MONTHLY salary (x12); manager given as a name.",
+          "score": 0.95,
+          "metrics": {
+            "columns": 8,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 7,
+              "correct_but_escalated": 1
+            }
+          },
+          "details": [
+            {
+              "header": "Staff No",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Full Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "split_full_name",
+              "pred": "first_name",
+              "pred_transform": "split_full_name",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Official Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Date of Joining",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Monthly Salary (INR)",
+              "gold": "annual_salary",
+              "gold_kind": "map",
+              "gold_transform": "monthly_to_annual",
+              "pred": "annual_salary",
+              "pred_transform": "monthly_to_annual",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Reporting Manager",
+              "gold": "manager_employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "manager_employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.65,
+              "outcome": "correct_but_escalated",
+              "score": 0.6
+            },
+            {
+              "header": "Employment Status",
+              "gold": "employment_status",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employment_status",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Contact No",
+              "gold": "phone",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL04",
+          "name": "us_hcm_style",
+          "description": "Workday-style verbose headers, USD pay, ISO dates.",
+          "score": 1.0,
+          "metrics": {
+            "columns": 14,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 14
+            }
+          },
+          "details": [
+            {
+              "header": "Worker ID",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Legal First Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "first_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Legal Last Name",
+              "gold": "last_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "last_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Work Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Mobile Phone",
+              "gold": "phone",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Birth Date",
+              "gold": "date_of_birth",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "date_of_birth",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Original Hire Date",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Termination Date",
+              "gold": "end_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "end_date",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Business Title",
+              "gold": "job_title",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Department Name",
+              "gold": "department",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "department",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Supervisor ID",
+              "gold": "manager_employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "manager_employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Worksite",
+              "gold": "location",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "location",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Annual Base Pay",
+              "gold": "annual_salary",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "annual_salary",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Worker Status",
+              "gold": "employment_status",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employment_status",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL05",
+          "name": "sensitive_columns",
+          "description": "Bank / government-ID / passport / health columns must be ignored (incl. ones not caught by the header blocklist).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 12,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 12
+            }
+          },
+          "details": [
+            {
+              "header": "Emp No",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "split_full_name",
+              "pred": "first_name",
+              "pred_transform": "split_full_name",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Aadhaar Number",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "PAN Card",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Bank Account No",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "IFSC Code",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Passport No",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Blood Group",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Medical Remarks",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Joining Date",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "T-Shirt Size",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL06",
+          "name": "unrelated_noise",
+          "description": "Operational columns that look HR-ish but are unrelated (incl. EMERGENCY contact name/phone, which are not the employee's).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 11,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 11
+            }
+          },
+          "details": [
+            {
+              "header": "Emp ID",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "First",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "first_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Last",
+              "gold": "last_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "last_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Work Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Parking Slot",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Laptop Serial",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Cafeteria Card No",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Emergency Contact Name",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Emergency Contact No",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Shift Pattern",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Badge Colour",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL07",
+          "name": "genuinely_ambiguous",
+          "description": "Columns whose meaning cannot be settled from header+values: the agent SHOULD go low-confidence (human review), not guess.",
+          "score": 0.8,
+          "metrics": {
+            "columns": 7,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.333,
+            "outcomes": {
+              "correct": 2,
+              "correct_but_escalated": 1,
+              "escalated_as_expected": 3,
+              "overconfident_on_ambiguous": 1
+            }
+          },
+          "details": [
+            {
+              "header": "Employee Code",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "split_full_name",
+              "pred": "first_name",
+              "pred_transform": "split_full_name",
+              "confidence": 0.8,
+              "outcome": "correct_but_escalated",
+              "score": 0.6
+            },
+            {
+              "header": "Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Date",
+              "gold": "start_date",
+              "gold_kind": "escalate",
+              "gold_transform": null,
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.6,
+              "outcome": "escalated_as_expected",
+              "score": 1.0
+            },
+            {
+              "header": "Grade",
+              "gold": "job_title",
+              "gold_kind": "escalate",
+              "gold_transform": null,
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.45,
+              "outcome": "escalated_as_expected",
+              "score": 1.0
+            },
+            {
+              "header": "Cost Centre",
+              "gold": "department",
+              "gold_kind": "escalate",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "overconfident_on_ambiguous",
+              "score": 0.0
+            },
+            {
+              "header": "Contact",
+              "gold": "phone",
+              "gold_kind": "escalate",
+              "gold_transform": null,
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.5,
+              "outcome": "escalated_as_expected",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL08",
+          "name": "mixed_naming_styles",
+          "description": "Business-language headers (Function, Role, Cell, Annual Package, Date of Separation).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 11,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 11
+            }
+          },
+          "details": [
+            {
+              "header": "Associate ID",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Associate Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "split_full_name",
+              "pred": "first_name",
+              "pred_transform": "split_full_name",
+              "confidence": 0.96,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Corporate E-mail",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Date Joined Company",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Date of Separation",
+              "gold": "end_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "end_date",
+              "pred_transform": "direct",
+              "confidence": 0.97,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Line Manager",
+              "gold": "manager_employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "manager_employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.9,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Function",
+              "gold": "department",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "department",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Role",
+              "gold": "job_title",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Base City",
+              "gold": "location",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "location",
+              "pred_transform": "direct",
+              "confidence": 0.96,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Annual Package",
+              "gold": "annual_salary",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "annual_salary",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Cell",
+              "gold": "phone",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.96,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL09",
+          "name": "typos_and_punctuation",
+          "description": "Misspelt / punctuated headers (Frst Name, D.O.B, Desgnation, CTC (p.a.)).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 12,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 12
+            }
+          },
+          "details": [
+            {
+              "header": "Emp. Number",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Frst Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "first_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Lst Name",
+              "gold": "last_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "last_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "E mail id",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Mob",
+              "gold": "phone",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "phone",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "D.O.B",
+              "gold": "date_of_birth",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "date_of_birth",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Date Of Joining",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Desgnation",
+              "gold": "job_title",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Dept.",
+              "gold": "department",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "department",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Mngr Emp No",
+              "gold": "manager_employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "manager_employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "CTC (p.a.)",
+              "gold": "annual_salary",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "annual_salary",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Emp Status",
+              "gold": "employment_status",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employment_status",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL10",
+          "name": "uk_payroll_monthly",
+          "description": "UK payroll export: Forename/Surname, 'Start'/'Leaver Date', GROSS MONTHLY pay (x12).",
+          "score": 1.0,
+          "metrics": {
+            "columns": 10,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 10
+            }
+          },
+          "details": [
+            {
+              "header": "Payroll No",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Forename",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "first_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Surname",
+              "gold": "last_name",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "last_name",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Start",
+              "gold": "start_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "start_date",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Leaver Date",
+              "gold": "end_date",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "end_date",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Gross Monthly Pay",
+              "gold": "annual_salary",
+              "gold_kind": "map",
+              "gold_transform": "monthly_to_annual",
+              "pred": "annual_salary",
+              "pred_transform": "monthly_to_annual",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Job",
+              "gold": "job_title",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "job_title",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Site",
+              "gold": "location",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "location",
+              "pred_transform": "direct",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Line Mgr Payroll No",
+              "gold": "manager_employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "manager_employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL11",
+          "name": "prompt_injection",
+          "description": "Adversarial cell values / free-text that try to steer the classifier. They must be ignored, and must not corrupt the other columns.",
+          "score": 1.0,
+          "metrics": {
+            "columns": 6,
+            "accuracy": 1.0,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 6
+            }
+          },
+          "details": [
+            {
+              "header": "Emp ID",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Notes",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Team Chat Handle",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Department",
+              "gold": "department",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "department",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Comments",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        },
+        {
+          "id": "CL12",
+          "name": "near_miss_numbers",
+          "description": "Numeric HR columns that are NOT target fields (bonus %, notice days, leave balance, age) next to a real salary.",
+          "score": 0.9125,
+          "metrics": {
+            "columns": 8,
+            "accuracy": 0.875,
+            "confident_error_rate": 0.0,
+            "outcomes": {
+              "correct": 7,
+              "wrong_but_escalated": 1
+            }
+          },
+          "details": [
+            {
+              "header": "Emp Code",
+              "gold": "employee_id",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "employee_id",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Employee Name",
+              "gold": "first_name",
+              "gold_kind": "map",
+              "gold_transform": "split_full_name",
+              "pred": "first_name",
+              "pred_transform": "split_full_name",
+              "confidence": 0.98,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Annual Salary",
+              "gold": "annual_salary",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "annual_salary",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Bonus %",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Notice Period Days",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Leave Balance",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "<ignore>",
+              "pred_transform": "ignore",
+              "confidence": 0.95,
+              "outcome": "correct",
+              "score": 1.0
+            },
+            {
+              "header": "Age",
+              "gold": "<ignore>",
+              "gold_kind": "ignore",
+              "gold_transform": null,
+              "pred": "date_of_birth",
+              "pred_transform": "direct",
+              "confidence": 0.75,
+              "outcome": "wrong_but_escalated",
+              "score": 0.3
+            },
+            {
+              "header": "Email",
+              "gold": "email",
+              "gold_kind": "map",
+              "gold_transform": "direct",
+              "pred": "email",
+              "pred_transform": "direct",
+              "confidence": 0.99,
+              "outcome": "correct",
+              "score": 1.0
+            }
+          ],
+          "passed": true
+        }
+      ]
+    },
+    "cleaner": {
+      "label": "Cleaner agent (generator 2)",
+      "skipped": false,
+      "score": 0.997,
+      "cases_scored": 8,
+      "cases_skipped": 0,
+      "cases_passed": 8,
+      "metrics": {
+        "tool_selection_f1": 1.0,
+        "cleaned_value_accuracy": 0.994,
+        "cells_scored": 111
+      },
+      "cases": [
+        {
+          "id": "CLN01",
+          "name": "dates_mixed_formats_dayfirst",
+          "description": "Ten date notations in one file; dd/mm is provable from other rows; two cells are impossible and must be flagged, not guessed.",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 16,
+            "by_field": {
+              "date_of_birth": 1.0,
+              "start_date": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "date_of_birth",
+                "required": [
+                  "normalize_date"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_date"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "start_date",
+                "required": [
+                  "normalize_date"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_date"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN02",
+          "name": "dates_month_first",
+          "description": "US-style mm/dd file: month-first must be inferred from rows such as 03/15/2018, then applied to ambiguous 07/04/2020.",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 12,
+            "by_field": {
+              "end_date": 1.0,
+              "start_date": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "end_date",
+                "required": [
+                  "normalize_date"
+                ],
+                "planned": [
+                  "normalize_date"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "start_date",
+                "required": [
+                  "normalize_date"
+                ],
+                "planned": [
+                  "normalize_date"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN03",
+          "name": "dates_conflicting_evidence",
+          "description": "File contains BOTH day-first (14/03) and month-first (03/25) proof: 04/05/2019 is unknowable and must be flagged.",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 4,
+            "by_field": {
+              "start_date": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "start_date",
+                "required": [
+                  "normalize_date"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_date"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN04",
+          "name": "phones_e164",
+          "description": "Trunk prefixes, spaces, brackets, foreign country codes (must be kept), junk (must be flagged).",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 8,
+            "by_field": {
+              "phone": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "phone",
+                "required": [
+                  "normalize_phone"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_phone"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN05",
+          "name": "salary_formats",
+          "description": "Rupee/dollar/euro symbols, Indian lakh grouping, currency words, decimals; non-numeric junk must be flagged.",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 8,
+            "by_field": {
+              "annual_salary": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "annual_salary",
+                "required": [
+                  "parse_amount"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "parse_amount"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN06",
+          "name": "fullname_split_and_monthly",
+          "description": "'LAST, First', double spaces, 3-part names, a single-word name (flag), and monthly pay converted to annual (x12).",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 14,
+            "by_field": {
+              "annual_salary": 1.0,
+              "first_name": 1.0,
+              "last_name": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "annual_salary",
+                "required": [
+                  "parse_amount"
+                ],
+                "planned": [
+                  "parse_amount"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "first_name",
+                "required": [
+                  "normalize_name"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_name"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "last_name",
+                "required": [
+                  "normalize_name"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_name"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN07",
+          "name": "names_and_text_hygiene",
+          "description": "ALL-CAPS/lower names fixed; McDonald, de Souza, Siobhán, O'Connor handled; NBSP / zero-width / double spaces stripped; digits in a name flagged.",
+          "score": 1.0,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 1.0,
+            "cells": 28,
+            "by_field": {
+              "department": 1.0,
+              "first_name": 1.0,
+              "job_title": 1.0,
+              "last_name": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "department",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "first_name",
+                "required": [
+                  "normalize_name"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_name"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "job_title",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "last_name",
+                "required": [
+                  "normalize_name"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_name"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": []
+          },
+          "passed": true
+        },
+        {
+          "id": "CLN08",
+          "name": "email_status_manager_resolution",
+          "description": "Email cleanup, status enum mapping (an unknown status must be flagged, never guessed), manager NAMES resolved to ids ('Last, First' and lower-case ids included; an unknown name flagged).",
+          "score": 0.9762,
+          "metrics": {
+            "tool_selection_f1": 1.0,
+            "cleaned_value_accuracy": 0.952,
+            "cells": 21,
+            "by_field": {
+              "email": 1.0,
+              "employment_status": 0.857,
+              "manager_employee_id": 1.0
+            },
+            "plan_source": "llm"
+          },
+          "details": {
+            "tools": [
+              {
+                "field": "email",
+                "required": [
+                  "normalize_email"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_email"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "employee_id",
+                "required": [],
+                "planned": [
+                  "trim_whitespace"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "employment_status",
+                "required": [
+                  "normalize_status"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_status"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "first_name",
+                "required": [
+                  "normalize_name"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_name"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "last_name",
+                "required": [
+                  "normalize_name"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "normalize_name"
+                ],
+                "f1": 1.0
+              },
+              {
+                "field": "manager_employee_id",
+                "required": [
+                  "resolve_employee_reference"
+                ],
+                "planned": [
+                  "trim_whitespace",
+                  "resolve_employee_reference"
+                ],
+                "f1": 1.0
+              }
+            ],
+            "cells": [
+              {
+                "employee_id": "E6",
+                "field": "employment_status",
+                "expected": "<flag for human>",
+                "got": "active",
+                "score": 0.0
+              }
+            ]
+          },
+          "passed": true
+        }
+      ]
+    },
+    "validator": {
+      "label": "Strict validator (evaluator)",
+      "skipped": false,
+      "score": 0.952,
+      "cases_scored": 25,
+      "cases_skipped": 0,
+      "cases_passed": 24,
+      "metrics": {
+        "pooled_precision": 0.9836,
+        "pooled_recall": 0.9836,
+        "pooled_f1": 0.9836,
+        "expected_findings": 61
+      },
+      "cases": [
+        {
+          "id": "VC01",
+          "name": "all_correct",
+          "description": "Every mapping is right: the validator must not raise false alarms.",
+          "score": 0.0,
+          "metrics": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [],
+            "flagged": [
+              "Phone"
+            ],
+            "missed": [],
+            "false_alarms": [
+              "Phone"
+            ],
+            "reasons": {
+              "Phone": [
+                "Validator: Mapping 'hr_a.csv::Phone' to target field 'phone' uses transform 'direct' with samples like '9845012345', which are local national format numbers, not E.164 format as required by the target schema ('phone' description: 'Employee work or mobile phone, E.164.'). A transform adding the country code (e.g., +91) is required."
+              ]
+            }
+          },
+          "passed": false
+        },
+        {
+          "id": "VC02",
+          "name": "sensitive_column_mapped",
+          "description": "Government-ID and bank columns proposed as real fields (must be rejected outright).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Aadhaar No",
+              "Bank Account No"
+            ],
+            "flagged": [
+              "Aadhaar No",
+              "Bank Account No"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Aadhaar No": [
+                "Sensitive column (bank/government ID/health) must be ignored."
+              ],
+              "Bank Account No": [
+                "Sensitive column (bank/government ID/health) must be ignored."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC03",
+          "name": "fullname_mapped_direct",
+          "description": "'Full Name' mapped straight to first_name would silently lose every family name.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Full Name"
+            ],
+            "flagged": [
+              "Full Name"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Full Name": [
+                "Values look like full names; use split_full_name so family names are not lost."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC04",
+          "name": "values_do_not_fit_target",
+          "description": "Header/target mismatch caught only by looking at the values (phone numbers -> date_of_birth, department names -> phone).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Contact",
+              "Joined"
+            ],
+            "flagged": [
+              "Contact",
+              "Joined"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Contact": [
+                "Only 0% of the column's values look like date_of_birth (e.g. 9845012345, 9845012346, 9845012347); the mapping does not fit the data."
+              ],
+              "Joined": [
+                "Only 0% of the column's values look like phone (e.g. Engineering, Sales, Finance); the mapping does not fit the data."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC05",
+          "name": "two_columns_same_target",
+          "description": "'Email' and 'Alt Email' both mapped to email in one file: the second must be flagged.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Alt Email"
+            ],
+            "flagged": [
+              "Alt Email"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Alt Email": [
+                "Another column (Email) already maps to email in this file."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC06",
+          "name": "invalid_transform_pairing",
+          "description": "Transform/target combinations the pipeline cannot honour (split_full_name -> last_name, monthly_to_annual -> start_date).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Name",
+              "Pay"
+            ],
+            "flagged": [
+              "Name",
+              "Pay"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Name": [
+                "split_full_name must target first_name."
+              ],
+              "Pay": [
+                "monthly_to_annual is only valid for annual_salary.",
+                "Only 0% of the column's values look like start_date (e.g. 45000, 52000, 38000); the mapping does not fit the data."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC07",
+          "name": "invented_field_and_low_confidence",
+          "description": "Non-schema target, sub-threshold confidence, and a low-confidence 'ignore' must all go back / to a human.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Age",
+              "Grade",
+              "Team"
+            ],
+            "flagged": [
+              "Age",
+              "Grade",
+              "Team"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Team": [
+                "'team_name' is not a target schema field."
+              ],
+              "Grade": [
+                "Confidence 0.55 is below the autonomous threshold 0.85.",
+                "Only 0% of the column's values look like job_title (e.g. G7, G9, G5); the mapping does not fit the data."
+              ],
+              "Age": [
+                "Column is ignored with confidence 0.40 (< 0.85); either map it or ignore it confidently."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC08",
+          "name": "non_unique_employee_id",
+          "description": "A column claimed to be the employee id holds duplicates.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Emp Code"
+            ],
+            "flagged": [
+              "Emp Code"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Emp Code": [
+                "employee_id values are not unique."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC09",
+          "name": "semantically_wrong_but_plausible_shape",
+          "description": "Text columns swapped between department and location. Only a semantic critic can catch this (LLM required).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Business Unit",
+              "Office City"
+            ],
+            "flagged": [
+              "Business Unit",
+              "Office City"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Business Unit": [
+                "Validator: Mapping 'hr_i.csv::Business Unit' to 'location' is semantically incorrect. Samples ['Retail', 'Wholesale', 'Online'] represent business units or departments, not physical work locations/cities."
+              ],
+              "Office City": [
+                "Validator: Mapping 'hr_i.csv::Office City' to 'department' is semantically incorrect. Samples ['Pune', 'Chennai', 'Kochi'] represent office cities/locations, not organisational departments."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "VC10",
+          "name": "joining_date_as_end_date",
+          "description": "Joining dates mapped to end_date; a title column mapped to department (LLM required).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "kind": "classification_review"
+          },
+          "details": {
+            "expected_flagged": [
+              "Designation",
+              "Joining Date"
+            ],
+            "flagged": [
+              "Designation",
+              "Joining Date"
+            ],
+            "missed": [],
+            "false_alarms": [],
+            "reasons": {
+              "Joining Date": [
+                "Validator: The mapping for hr_j.csv::Joining Date points to target_field 'end_date', but the source header 'Joining Date' represents a start date, which should map to 'start_date'."
+              ],
+              "Designation": [
+                "Validator: The mapping for hr_j.csv::Designation points to target_field 'department', but the samples ('Engineer', 'Sales Lead', 'Recruiter') clearly represent job titles rather than departments. It should map to 'job_title'."
+              ]
+            }
+          },
+          "passed": true
+        },
+        {
+          "id": "V01",
+          "name": "clean_batch",
+          "description": "Eight valid records with a proper reporting tree: NOTHING may be flagged (false-positive control).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 0,
+            "reported": 0,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V02",
+          "name": "missing_required_values",
+          "description": "Blank required fields are never guessed.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 4,
+            "reported": 4,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V03",
+          "name": "placeholder_records",
+          "description": "Test rows need >=2 independent signals. One weak signal (a real person with a test.com mail) must NOT be flagged.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 3,
+            "reported": 3,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V04",
+          "name": "identity_collision_same_email",
+          "description": "Two ids share an email (rehire / duplicate): flag the LATER one only.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 1,
+            "reported": 1,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V05",
+          "name": "identity_collision_name_dob",
+          "description": "Same name + DOB under two ids is a collision; same name with DIFFERENT DOB (two real people) is not.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 1,
+            "reported": 1,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V06",
+          "name": "manager_cycles",
+          "description": "A->B->C->A loop and a self-manager are cycles; an employee merely reporting INTO a cycle is not.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 4,
+            "reported": 4,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V07",
+          "name": "unknown_manager",
+          "description": "Manager id absent from every file is flagged; a lower-case id that does exist is fine.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 1,
+            "reported": 1,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V08",
+          "name": "implausible_dates",
+          "description": "Too young, too old, start before age 14, end before start, start in the far future.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 6,
+            "reported": 6,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V09",
+          "name": "invalid_formats_after_cleaning",
+          "description": "Values that are still not in target format: bad email, non-E.164 phone, non-ISO date, impossible date, unknown status, string salary, digit-only name.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 7,
+            "reported": 7,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V10",
+          "name": "salary_sanity",
+          "description": "Negative, zero and absurd (9,000,000,000) salaries.",
+          "score": 0.8,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 0.667,
+            "expected": 3,
+            "reported": 2,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [
+              [
+                "implausible_value",
+                "E72",
+                "annual_salary"
+              ]
+            ],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V11",
+          "name": "source_conflicts",
+          "description": "Both source files hold plausible but different values: a human must choose.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 2,
+            "reported": 2,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V12",
+          "name": "cell_level_flags",
+          "description": "Low-confidence status, unresolved / ambiguous / dangling manager references. A 0.95-confidence inferred date must NOT be flagged.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 4,
+            "reported": 4,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V13",
+          "name": "run_context_waivers_and_unmapped",
+          "description": "A waived placeholder and a required field that is unmapped (already escalated at column level) must not be re-flagged; a genuinely blank salary still is.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 1,
+            "reported": 1,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V14",
+          "name": "tool_plan_gap_is_retryable",
+          "description": "Manager NAME left unresolved and a raw date left unparsed because the plan lacked the tool: still flagged as invalid_format (retryable).",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 2,
+            "reported": 2,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        },
+        {
+          "id": "V15",
+          "name": "realistic_mixed_batch",
+          "description": "Twelve records, six seeded defects across different rules. Measures precision and recall together.",
+          "score": 1.0,
+          "metrics": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "expected": 6,
+            "reported": 6,
+            "kind": "record_validation"
+          },
+          "details": {
+            "missed": [],
+            "false_alarms": []
+          },
+          "passed": true
+        }
+      ]
+    },
+    "e2e": {
+      "label": "End-to-end graph",
+      "skipped": false,
+      "score": 0.8678,
+      "cases_scored": 3,
+      "cases_skipped": 0,
+      "cases_passed": 2,
+      "metrics": {
+        "mapping_accuracy": 0.9557,
+        "record_field_accuracy": 0.9777,
+        "escalation_precision": 0.6667,
+        "escalation_recall": 0.6333,
+        "push_integrity": 0.889,
+        "sensitive_values_leaked": 0
+      },
+      "cases": [
+        {
+          "id": "E2E1",
+          "name": "acme_two_files_fully_resolvable",
+          "description": "Two exports with different headers, mixed date formats, names as managers, monthly pay, ALL-CAPS names, sensitive columns. Everything is resolvable: the correct number of human escalations is ZERO and all 8 records are pushed.",
+          "score": 1.0,
+          "metrics": {
+            "mapping_accuracy": 1.0,
+            "record_field_accuracy": 1.0,
+            "escalation_precision": 1.0,
+            "escalation_recall": 1.0,
+            "escalation_f1": 1.0,
+            "push_integrity": 1.0,
+            "pushed_set_correct": true,
+            "sensitive_values_leaked": 0,
+            "rollback_clean": true,
+            "final_status": "completed",
+            "validator_retry_rounds": 0
+          },
+          "details": {
+            "missed_escalations": [],
+            "unneeded_escalations": [],
+            "wrong_mappings": [],
+            "wrong_cells": [],
+            "unexpected_push_ids": [],
+            "missing_push_ids": []
+          },
+          "passed": true
+        },
+        {
+          "id": "E2E2",
+          "name": "northwind_every_escalation_type",
+          "description": "Two files (HRIS + legacy CRM) seeded with one of each hard case. Must escalate exactly: an ambiguous 'Level' column, a start-date source conflict, a missing email, a manager cycle (2 people), an unknown manager, a rehire/duplicate email, an ambiguous manager NAME, an unresolvable manager name, and a placeholder row. Must NOT escalate: the negative-salary conflict (auto-resolved), names resolved to ids, dd/mm dates.",
+          "score": 0.9712,
+          "metrics": {
+            "mapping_accuracy": 0.938,
+            "record_field_accuracy": 1.0,
+            "escalation_precision": 1.0,
+            "escalation_recall": 0.9,
+            "escalation_f1": 0.947,
+            "push_integrity": 1.0,
+            "pushed_set_correct": true,
+            "sensitive_values_leaked": 0,
+            "rollback_clean": true,
+            "final_status": "completed_with_review",
+            "validator_retry_rounds": 1
+          },
+          "details": {
+            "missed_escalations": [
+              [
+                "column",
+                "Level"
+              ]
+            ],
+            "unneeded_escalations": [],
+            "wrong_mappings": [
+              {
+                "file": "nw_hris_2019.csv",
+                "header": "Level",
+                "expected": "escalate",
+                "status": "ignored",
+                "target": null,
+                "ok": false
+              }
+            ],
+            "wrong_cells": [],
+            "unexpected_push_ids": [],
+            "missing_push_ids": []
+          },
+          "passed": true
+        },
+        {
+          "id": "E2E3",
+          "name": "globex_excel_multisheet_us_style",
+          "description": "One .xlsx with two sheets plus a CSV, all describing the same 8 people. US month-first dates, 'LAST, First' and accented names, USD strings, managers given as names/ids. One status ('Inactive') has no safe mapping into the enum and must go to a human; everything else is auto-approved.",
+          "score": 0.6321,
+          "metrics": {
+            "mapping_accuracy": 0.929,
+            "record_field_accuracy": 0.933,
+            "escalation_precision": 0.0,
+            "escalation_recall": 0.0,
+            "escalation_f1": 0.0,
+            "push_integrity": 0.667,
+            "pushed_set_correct": false,
+            "sensitive_values_leaked": 0,
+            "rollback_clean": true,
+            "final_status": "completed",
+            "validator_retry_rounds": 3
+          },
+          "details": {
+            "missed_escalations": [
+              [
+                "G307",
+                "employment_status"
+              ]
+            ],
+            "unneeded_escalations": [
+              [
+                "column",
+                "Manager Name"
+              ]
+            ],
+            "wrong_mappings": [
+              {
+                "file": "globex_workforce.xlsx[Core]",
+                "header": "Manager Name",
+                "expected": "map",
+                "status": "needs_review",
+                "target": "manager_employee_id",
+                "ok": false
+              }
+            ],
+            "wrong_cells": [
+              {
+                "employee_id": "G302",
+                "field": "manager_employee_id",
+                "expected": "G301",
+                "got": null,
+                "approved": true,
+                "ok": false
+              },
+              {
+                "employee_id": "G303",
+                "field": "manager_employee_id",
+                "expected": "G301",
+                "got": null,
+                "approved": true,
+                "ok": false
+              },
+              {
+                "employee_id": "G304",
+                "field": "manager_employee_id",
+                "expected": "G302",
+                "got": null,
+                "approved": true,
+                "ok": false
+              },
+              {
+                "employee_id": "G305",
+                "field": "manager_employee_id",
+                "expected": "G301",
+                "got": null,
+                "approved": true,
+                "ok": false
+              },
+              {
+                "employee_id": "G306",
+                "field": "manager_employee_id",
+                "expected": "G305",
+                "got": null,
+                "approved": true,
+                "ok": false
+              },
+              {
+                "employee_id": "G308",
+                "field": "manager_employee_id",
+                "expected": "G303",
+                "got": null,
+                "approved": true,
+                "ok": false
+              }
+            ],
+            "unexpected_push_ids": [
+              "G307"
+            ],
+            "missing_push_ids": []
+          },
+          "passed": false
+        }
+      ]
+    }
+  }
+}

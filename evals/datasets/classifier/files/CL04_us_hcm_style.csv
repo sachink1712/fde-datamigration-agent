@@ -1,0 +1,5 @@
+Worker ID,Legal First Name,Legal Last Name,Work Email,Mobile Phone,Birth Date,Original Hire Date,Termination Date,Business Title,Department Name,Supervisor ID,Worksite,Annual Base Pay,Worker Status
+W-9001,Emily,Carter,emily.carter@lumen.com,+1 650-253-0000,1989-04-12,2017-08-21,,Product Manager,Product,W-9000,"Austin, TX","$142,000.00",Active
+W-9002,Michael,Nguyen,michael.nguyen@lumen.com,+1 202-456-1111,1984-11-30,2015-02-02,2023-06-30,Staff Engineer,Engineering,W-9000,"Seattle, WA","$188,500.00",Terminated
+W-9003,Sofia,Ramirez,sofia.ramirez@lumen.com,+1 312-555-0147,1991-09-05,2020-10-19,2024-01-31,Designer,Design,W-9001,"Chicago, IL","$118,000.00",Terminated
+W-9004,James,O'Neil,james.oneil@lumen.com,+1 415-555-0132,1979-01-22,2012-05-14,,Director,Operations,W-9000,"San Francisco, CA","$210,000.00",On Leave

@@ -1,0 +1,9 @@
+Emp Code,Full Name,Work Mail,Joining Dt,Monthly Pay,Mgr,Dept,Aadhaar No,Parking Slot
+E101,Rahul Mehta,rahul.mehta@acme.in,03-Feb-2015,250000,,Engineering,2345 6789 0123,P-01
+E102,Asha Rao,asha.rao@acme.in,14/07/2018,95000,Rahul Mehta,Engineering,3456 7890 1234,P-02
+E103,Vikram Singh,vikram.singh@acme.in,21/11/2019,72000,E101,Sales,4567 8901 2345,P-03
+E104,Priya Nair,priya.nair@acme.in,05/01/2020,68000,Asha Rao,Engineering,5678 9012 3456,P-04
+E105,SIVA KUMAR,siva.kumar@acme.in,30/06/2021,54000,E103,Sales,6789 0123 4567,P-05
+E106,Meena Iyer,meena.iyer@acme.in,12/03/2017,88000,Rahul Mehta,Finance,7890 1234 5678,P-06
+E107,Karthik Raj,karthik.raj@acme.in,02/09/2022,41000,E106,Finance,8901 2345 6789,P-07
+E108,Divya Menon,divya.menon@acme.in,18/04/2023,39000,E102,Engineering,9012 3456 7890,P-08

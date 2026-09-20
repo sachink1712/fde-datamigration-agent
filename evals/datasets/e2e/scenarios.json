@@ -1,0 +1,789 @@
+[
+  {
+    "id": "E2E1",
+    "name": "acme_two_files_fully_resolvable",
+    "description": "Two exports with different headers, mixed date formats, names as managers, monthly pay, ALL-CAPS names, sensitive columns. Everything is resolvable: the correct number of human escalations is ZERO and all 8 records are pushed.",
+    "files": [
+      "e2e1_acme/acme_hr_master.csv",
+      "e2e1_acme/acme_payroll_dump.csv"
+    ],
+    "mapping": [
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Emp Code",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Full Name",
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Work Mail",
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Joining Dt",
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Monthly Pay",
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "monthly_to_annual"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Mgr",
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Dept",
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Aadhaar No",
+        "kind": "ignore"
+      },
+      {
+        "file": "acme_hr_master.csv",
+        "header": "Parking Slot",
+        "kind": "ignore"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "EID",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Given Name",
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Surname",
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "DOB",
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Mobile",
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Designation",
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Base Location",
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Status",
+        "kind": "map",
+        "target_field": "employment_status",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Annual CTC",
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      {
+        "file": "acme_payroll_dump.csv",
+        "header": "Bank Acct",
+        "kind": "ignore"
+      }
+    ],
+    "expected_escalations": [],
+    "approved_records": [
+      {
+        "employee_id": "E101",
+        "first_name": "Rahul",
+        "last_name": "Mehta",
+        "email": "rahul.mehta@acme.in",
+        "department": "Engineering",
+        "start_date": "2015-02-03",
+        "annual_salary": 3000000,
+        "date_of_birth": "1980-01-15",
+        "phone": "+919845010101",
+        "job_title": "Engineering Director",
+        "location": "Bengaluru",
+        "employment_status": "active"
+      },
+      {
+        "employee_id": "E102",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "asha.rao@acme.in",
+        "department": "Engineering",
+        "start_date": "2018-07-14",
+        "annual_salary": 1140000,
+        "date_of_birth": "1990-05-12",
+        "phone": "+919845010202",
+        "job_title": "Senior Engineer",
+        "location": "Bengaluru",
+        "employment_status": "active",
+        "manager_employee_id": "E101"
+      },
+      {
+        "employee_id": "E103",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh@acme.in",
+        "department": "Sales",
+        "start_date": "2019-11-21",
+        "annual_salary": 864000,
+        "date_of_birth": "1988-03-14",
+        "phone": "+919845010303",
+        "job_title": "Sales Manager",
+        "location": "Mumbai",
+        "employment_status": "active",
+        "manager_employee_id": "E101"
+      },
+      {
+        "employee_id": "E104",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair@acme.in",
+        "department": "Engineering",
+        "start_date": "2020-01-05",
+        "annual_salary": 816000,
+        "date_of_birth": "1992-07-04",
+        "phone": "+919845010404",
+        "job_title": "Engineer",
+        "location": "Chennai",
+        "employment_status": "on_leave",
+        "manager_employee_id": "E102"
+      },
+      {
+        "employee_id": "E105",
+        "first_name": "Siva",
+        "last_name": "Kumar",
+        "email": "siva.kumar@acme.in",
+        "department": "Sales",
+        "start_date": "2021-06-30",
+        "annual_salary": 648000,
+        "date_of_birth": "1994-10-21",
+        "phone": "+919845010505",
+        "job_title": "Sales Executive",
+        "location": "Mumbai",
+        "employment_status": "active",
+        "manager_employee_id": "E103"
+      },
+      {
+        "employee_id": "E106",
+        "first_name": "Meena",
+        "last_name": "Iyer",
+        "email": "meena.iyer@acme.in",
+        "department": "Finance",
+        "start_date": "2017-03-12",
+        "annual_salary": 1056000,
+        "date_of_birth": "1986-02-02",
+        "phone": "+919845010606",
+        "job_title": "Finance Lead",
+        "location": "Hyderabad",
+        "employment_status": "active",
+        "manager_employee_id": "E101"
+      },
+      {
+        "employee_id": "E107",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj@acme.in",
+        "department": "Finance",
+        "start_date": "2022-09-02",
+        "annual_salary": 492000,
+        "date_of_birth": "1996-09-30",
+        "phone": "+919845010707",
+        "job_title": "Analyst",
+        "location": "Hyderabad",
+        "employment_status": "resigned",
+        "manager_employee_id": "E106"
+      },
+      {
+        "employee_id": "E108",
+        "first_name": "Divya",
+        "last_name": "Menon",
+        "email": "divya.menon@acme.in",
+        "department": "Engineering",
+        "start_date": "2023-04-18",
+        "annual_salary": 468000,
+        "date_of_birth": "1997-12-25",
+        "phone": "+919845010808",
+        "job_title": "Junior Engineer",
+        "location": "Bengaluru",
+        "employment_status": "active",
+        "manager_employee_id": "E102"
+      }
+    ],
+    "pushed_ids": [
+      "E101",
+      "E102",
+      "E103",
+      "E104",
+      "E105",
+      "E106",
+      "E107",
+      "E108"
+    ],
+    "forbidden_in_target": [
+      "2345 6789 0123",
+      "3456 7890 1234",
+      "4567 8901 2345",
+      "5678 9012 3456",
+      "6789 0123 4567",
+      "7890 1234 5678",
+      "8901 2345 6789",
+      "9012 3456 7890",
+      "50100011122",
+      "50100011123",
+      "50100011124",
+      "50100011125",
+      "50100011126",
+      "50100011127",
+      "50100011128",
+      "50100011129"
+    ]
+  },
+  {
+    "id": "E2E2",
+    "name": "northwind_every_escalation_type",
+    "description": "Two files (HRIS + legacy CRM) seeded with one of each hard case. Must escalate exactly: an ambiguous 'Level' column, a start-date source conflict, a missing email, a manager cycle (2 people), an unknown manager, a rehire/duplicate email, an ambiguous manager NAME, an unresolvable manager name, and a placeholder row. Must NOT escalate: the negative-salary conflict (auto-resolved), names resolved to ids, dd/mm dates.",
+    "files": [
+      "e2e2_northwind/nw_hris_2019.csv",
+      "e2e2_northwind/nw_legacy_crm.csv"
+    ],
+    "mapping": [
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Employee No",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Name",
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Email",
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Hire Date",
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Annual Salary",
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Reports To",
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Department",
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_hris_2019.csv",
+        "header": "Level",
+        "kind": "escalate",
+        "target_field": "job_title"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Emp Ref",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Surname",
+        "kind": "map",
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Forename",
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Date of Birth",
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Phone",
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Salary (annual)",
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Joined",
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      {
+        "file": "nw_legacy_crm.csv",
+        "header": "Position",
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      }
+    ],
+    "expected_escalations": [
+      {
+        "scope": "column",
+        "subject": "column",
+        "field": "Level"
+      },
+      {
+        "scope": "record",
+        "subject": "E204",
+        "field": "start_date"
+      },
+      {
+        "scope": "record",
+        "subject": "E206",
+        "field": "email"
+      },
+      {
+        "scope": "record",
+        "subject": "E207",
+        "field": "manager_employee_id"
+      },
+      {
+        "scope": "record",
+        "subject": "E208",
+        "field": "manager_employee_id"
+      },
+      {
+        "scope": "record",
+        "subject": "E209",
+        "field": "manager_employee_id"
+      },
+      {
+        "scope": "record",
+        "subject": "E211",
+        "field": "employee_id"
+      },
+      {
+        "scope": "record",
+        "subject": "E214",
+        "field": "manager_employee_id"
+      },
+      {
+        "scope": "record",
+        "subject": "E215",
+        "field": "manager_employee_id"
+      },
+      {
+        "scope": "record",
+        "subject": "E216",
+        "field": "record"
+      }
+    ],
+    "approved_records": [
+      {
+        "employee_id": "E201",
+        "first_name": "Neha",
+        "last_name": "Kapoor",
+        "email": "neha.kapoor@nw.com",
+        "start_date": "2016-04-11",
+        "annual_salary": 1800000,
+        "department": "Operations",
+        "date_of_birth": "1984-02-20",
+        "phone": "+919810020101",
+        "job_title": "Operations Head"
+      },
+      {
+        "employee_id": "E202",
+        "first_name": "Rohit",
+        "last_name": "Sen",
+        "email": "rohit.sen@nw.com",
+        "start_date": "2018-09-12",
+        "annual_salary": 1200000,
+        "department": "Operations",
+        "manager_employee_id": "E201",
+        "date_of_birth": "1989-07-07",
+        "phone": "+919810020202",
+        "job_title": "Manager"
+      },
+      {
+        "employee_id": "E203",
+        "first_name": "Tina",
+        "last_name": "Das",
+        "email": "tina.das@nw.com",
+        "start_date": "2019-01-14",
+        "annual_salary": 900000,
+        "department": "Operations",
+        "manager_employee_id": "E201",
+        "date_of_birth": "1993-03-03",
+        "phone": "+919810020303",
+        "job_title": "Analyst"
+      },
+      {
+        "employee_id": "E205",
+        "first_name": "Vera",
+        "last_name": "Joseph",
+        "email": "vera.joseph@nw.com",
+        "start_date": "2020-08-24",
+        "annual_salary": 950000,
+        "department": "Operations",
+        "manager_employee_id": "E201",
+        "date_of_birth": "1991-01-19",
+        "phone": "+919810020505",
+        "job_title": "Coordinator"
+      },
+      {
+        "employee_id": "E210",
+        "first_name": "Aarav",
+        "last_name": "Gill",
+        "email": "aarav.gill@nw.com",
+        "start_date": "2015-01-05",
+        "annual_salary": 1300000,
+        "department": "Operations",
+        "manager_employee_id": "E201"
+      },
+      {
+        "employee_id": "E212",
+        "first_name": "Amit",
+        "last_name": "Shah",
+        "email": "amit.shah1@nw.com",
+        "start_date": "2016-09-12",
+        "annual_salary": 1400000,
+        "department": "Operations",
+        "manager_employee_id": "E201"
+      },
+      {
+        "employee_id": "E213",
+        "first_name": "Amit",
+        "last_name": "Shah",
+        "email": "amit.shah2@nw.com",
+        "start_date": "2019-12-02",
+        "annual_salary": 1000000,
+        "department": "Operations",
+        "manager_employee_id": "E201"
+      }
+    ],
+    "pushed_ids": [
+      "E201",
+      "E202",
+      "E203",
+      "E205",
+      "E210",
+      "E212",
+      "E213"
+    ],
+    "forbidden_in_target": []
+  },
+  {
+    "id": "E2E3",
+    "name": "globex_excel_multisheet_us_style",
+    "description": "One .xlsx with two sheets plus a CSV, all describing the same 8 people. US month-first dates, 'LAST, First' and accented names, USD strings, managers given as names/ids. One status ('Inactive') has no safe mapping into the enum and must go to a human; everything else is auto-approved.",
+    "files": [
+      "e2e3_globex/globex_workforce.xlsx",
+      "e2e3_globex/globex_comp_export.csv"
+    ],
+    "mapping": [
+      {
+        "file": "globex_workforce.xlsx[Core]",
+        "header": "Person ID",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Core]",
+        "header": "Employee",
+        "kind": "map",
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      {
+        "file": "globex_workforce.xlsx[Core]",
+        "header": "Start Date",
+        "kind": "map",
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Core]",
+        "header": "Manager Name",
+        "kind": "map",
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Core]",
+        "header": "Team",
+        "kind": "map",
+        "target_field": "department",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Core]",
+        "header": "Job",
+        "kind": "map",
+        "target_field": "job_title",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Contact]",
+        "header": "ID",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Contact]",
+        "header": "Work E-mail",
+        "kind": "map",
+        "target_field": "email",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Contact]",
+        "header": "Mobile",
+        "kind": "map",
+        "target_field": "phone",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Contact]",
+        "header": "Birth Date",
+        "kind": "map",
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_workforce.xlsx[Contact]",
+        "header": "Employment State",
+        "kind": "map",
+        "target_field": "employment_status",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_comp_export.csv",
+        "header": "Employee Number",
+        "kind": "map",
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_comp_export.csv",
+        "header": "Base Pay (USD)",
+        "kind": "map",
+        "target_field": "annual_salary",
+        "transform": "direct"
+      },
+      {
+        "file": "globex_comp_export.csv",
+        "header": "Site",
+        "kind": "map",
+        "target_field": "location",
+        "transform": "direct"
+      }
+    ],
+    "expected_escalations": [
+      {
+        "scope": "record",
+        "subject": "G307",
+        "field": "employment_status"
+      }
+    ],
+    "approved_records": [
+      {
+        "employee_id": "G301",
+        "first_name": "John",
+        "last_name": "Smith",
+        "email": "john.smith@globex.com",
+        "start_date": "2018-03-15",
+        "annual_salary": 185000,
+        "department": "Platform",
+        "job_title": "VP Engineering",
+        "date_of_birth": "1979-04-12",
+        "phone": "+16502530000",
+        "location": "Austin",
+        "employment_status": "active"
+      },
+      {
+        "employee_id": "G302",
+        "first_name": "Siobhán",
+        "last_name": "O'Connor",
+        "email": "siobhan.oconnor@globex.com",
+        "start_date": "2020-07-04",
+        "annual_salary": 142000,
+        "department": "Platform",
+        "job_title": "Staff Engineer",
+        "date_of_birth": "1985-04-12",
+        "phone": "+442079460958",
+        "location": "London",
+        "employment_status": "active",
+        "manager_employee_id": "G301"
+      },
+      {
+        "employee_id": "G303",
+        "first_name": "Zoë",
+        "last_name": "de Souza",
+        "email": "zoe.desouza@globex.com",
+        "start_date": "2019-11-30",
+        "annual_salary": 121500,
+        "department": "Design",
+        "job_title": "Design Lead",
+        "date_of_birth": "1990-08-19",
+        "phone": "+12024561111",
+        "location": "Austin",
+        "employment_status": "on_leave",
+        "manager_employee_id": "G301"
+      },
+      {
+        "employee_id": "G304",
+        "first_name": "Wei",
+        "last_name": "Li",
+        "email": "wei.li@globex.com",
+        "start_date": "2021-12-01",
+        "annual_salary": 118500,
+        "department": "Platform",
+        "job_title": "Software Engineer",
+        "date_of_birth": "1992-01-30",
+        "phone": "+16502530001",
+        "location": "Austin",
+        "employment_status": "active",
+        "manager_employee_id": "G302"
+      },
+      {
+        "employee_id": "G305",
+        "first_name": "Hannah",
+        "last_name": "Brooks",
+        "email": "hannah.brooks@globex.com",
+        "start_date": "2022-02-28",
+        "annual_salary": 96000,
+        "department": "Marketing",
+        "job_title": "Marketing Manager",
+        "date_of_birth": "1988-06-06",
+        "phone": "+441614960123",
+        "location": "London",
+        "employment_status": "active",
+        "manager_employee_id": "G301"
+      },
+      {
+        "employee_id": "G306",
+        "first_name": "Ivan",
+        "last_name": "Petrov",
+        "email": "ivan.petrov@globex.com",
+        "start_date": "2019-05-09",
+        "annual_salary": 76250.5,
+        "department": "Marketing",
+        "job_title": "Content Strategist",
+        "date_of_birth": "1991-10-10",
+        "phone": "+442079460999",
+        "location": "London",
+        "employment_status": "terminated",
+        "manager_employee_id": "G305"
+      },
+      {
+        "employee_id": "G308",
+        "first_name": "Kevin",
+        "last_name": "Otieno",
+        "email": "kevin.otieno@globex.com",
+        "start_date": "2021-10-21",
+        "annual_salary": 110000,
+        "department": "Design",
+        "job_title": "Product Designer",
+        "date_of_birth": "1993-05-21",
+        "phone": "+16502530003",
+        "location": "Austin",
+        "employment_status": "active",
+        "manager_employee_id": "G303"
+      }
+    ],
+    "pushed_ids": [
+      "G301",
+      "G302",
+      "G303",
+      "G304",
+      "G305",
+      "G306",
+      "G308"
+    ],
+    "forbidden_in_target": []
+  }
+]

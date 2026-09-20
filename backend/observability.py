@@ -7,10 +7,7 @@ from .policies import safe_trace_value
 
 
 class Observability:
-    """Emits PII-safe local events and optional LangSmith traces.
-
-    Raw source rows deliberately never cross this boundary.
-    """
+    """Emits PII-safe local events and optional LangSmith traces. Raw source rows never cross this boundary."""
 
     def __init__(self) -> None:
         self.enabled = bool(os.getenv("LANGSMITH_API_KEY") and os.getenv("LANGSMITH_PROJECT"))
@@ -23,13 +20,8 @@ class Observability:
                 self.enabled = False
 
     def emit(self, stage: str, run_id: str, metrics: dict[str, Any]) -> dict[str, Any]:
-        payload = {
-            "run_id": run_id,
-            "stage": stage,
-            "metrics": {key: safe_trace_value(key, value) for key, value in metrics.items()},
-        }
+        payload = {"run_id": run_id, "stage": stage, "metrics": {k: safe_trace_value(k, v) for k, v in metrics.items()}}
         if self._traceable:
-            # Traces only the sanitized operational payload.
             @self._traceable(name=f"migration.{stage}")
             def send(data: dict[str, Any]) -> dict[str, Any]:
                 return data

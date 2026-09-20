@@ -1,0 +1,5 @@
+Emp. Number,Frst Name,Lst Name,E mail id,Mob,D.O.B,Date Of Joining,Desgnation,Dept.,Mngr Emp No,CTC (p.a.),Emp Status
+K-401,Harsh,Vardhan,harsh.v@kiran.in,9822200001,1990-02-11,2015-05-05,Consultant,Advisory,K-400,"1,450,000",Active
+K-402,Isha,Malhotra,isha.m@kiran.in,9822200002,1993-06-19,2019-09-16,Analyst,Advisory,K-401,"820,000",Active
+K-403,Jai,Khanna,jai.k@kiran.in,9822200003,1987-10-08,2013-03-25,Senior Consultant,Tax,K-400,"2,100,000",Terminated
+K-404,Kiran,Bedi,kiran.b@kiran.in,9822200004,1995-12-30,2022-08-01,Associate,Tax,K-403,"640,000",On Leave

@@ -1,0 +1,17 @@
+Employee No,Name,Email,Hire Date,Annual Salary,Reports To,Department,Level
+E201,Neha Kapoor,neha.kapoor@nw.com,2016-04-11,1800000,,Operations,B4
+E202,Rohit Sen,rohit.sen@nw.com,12-Sep-2018,1200000,Neha Kapoor,Operations,B3
+E203,Tina Das,tina.das@nw.com,2019-01-14,900000,E201,Operations,B2
+E204,Uday Nair,uday.nair@nw.com,2017-06-05,1100000,E201,Operations,B3
+E205,Vera Joseph,vera.joseph@nw.com,2020-08-24,-950000,E201,Operations,B2
+E206,Wade Cole,,2021-02-01,870000,E202,Operations,B2
+E207,Xena Roy,xena.roy@nw.com,2018-03-19,1000000,E208,Finance,B3
+E208,Yusuf Ali,yusuf.ali@nw.com,2018-04-02,1010000,E207,Finance,B3
+E209,Zara Khan,zara.khan@nw.com,2022-05-16,780000,E999,Finance,B2
+E210,Aarav Gill,aarav.gill@nw.com,2015-01-05,1300000,E201,Operations,B4
+E211,Aarav Gill,aarav.gill@nw.com,2023-03-01,1500000,E201,Operations,B4
+E212,Amit Shah,amit.shah1@nw.com,2016-09-12,1400000,E201,Operations,B4
+E213,Amit Shah,amit.shah2@nw.com,2019-12-02,1000000,E201,Operations,B3
+E214,Bela Rao,bela.rao@nw.com,2021-07-19,820000,Amit Shah,Operations,B2
+E215,Chirag Bose,chirag.bose@nw.com,2021-11-08,760000,Zed Nobody,Operations,B2
+E216,Test User,test@example.com,1900-01-01,100000,,Operations,B1

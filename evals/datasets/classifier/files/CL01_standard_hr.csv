@@ -1,0 +1,5 @@
+Employee ID,First Name,Last Name,Email Address,Phone Number,Date of Birth,Hire Date,Job Title,Department,Work Location
+E1001,Asha,Rao,asha.rao@zenith.com,+91 98450 12345,1990-05-14,2019-02-03,Software Engineer,Engineering,Bengaluru
+E1002,Vikram,Singh,vikram.singh@zenith.com,+91 98450 12346,1988-03-14,2020-07-14,Sales Manager,Sales,Mumbai
+E1003,Priya,Nair,priya.nair@zenith.com,+91 98450 12347,1992-07-04,2021-03-09,HR Executive,Human Resources,Chennai
+E1004,Karthik,Raj,karthik.raj@zenith.com,+91 98450 12348,1985-12-01,2018-11-05,Finance Analyst,Finance,Hyderabad

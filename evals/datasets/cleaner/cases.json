@@ -1,0 +1,494 @@
+[
+  {
+    "id": "CLN01",
+    "name": "dates_mixed_formats_dayfirst",
+    "description": "Ten date notations in one file; dd/mm is provable from other rows; two cells are impossible and must be flagged, not guessed.",
+    "file": "CLN01_dates_mixed_formats_dayfirst.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Joined": {
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "Born": {
+        "target_field": "date_of_birth",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "start_date": "2019-02-03",
+        "date_of_birth": "1990-05-14"
+      },
+      "E2": {
+        "start_date": "2020-07-14",
+        "date_of_birth": "1988-03-14"
+      },
+      "E3": {
+        "start_date": "2021-03-09",
+        "date_of_birth": "1992-07-04"
+      },
+      "E4": {
+        "start_date": "2018-11-05",
+        "date_of_birth": "1985-12-01"
+      },
+      "E5": {
+        "start_date": "2017-09-09",
+        "date_of_birth": "1995-01-01"
+      },
+      "E6": {
+        "start_date": "2016-12-31",
+        "date_of_birth": "1996-02-29"
+      },
+      "E7": {
+        "start_date": {
+          "flag": true
+        },
+        "date_of_birth": "1991-08-08"
+      },
+      "E8": {
+        "start_date": {
+          "flag": true
+        },
+        "date_of_birth": "1989-09-09"
+      }
+    },
+    "required_tools": {
+      "start_date": [
+        "normalize_date"
+      ],
+      "date_of_birth": [
+        "normalize_date"
+      ]
+    }
+  },
+  {
+    "id": "CLN02",
+    "name": "dates_month_first",
+    "description": "US-style mm/dd file: month-first must be inferred from rows such as 03/15/2018, then applied to ambiguous 07/04/2020.",
+    "file": "CLN02_dates_month_first.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Hire Date": {
+        "target_field": "start_date",
+        "transform": "direct"
+      },
+      "End Date": {
+        "target_field": "end_date",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "start_date": "2018-03-15",
+        "end_date": null
+      },
+      "E2": {
+        "start_date": "2019-11-30",
+        "end_date": "2023-01-31"
+      },
+      "E3": {
+        "start_date": "2020-07-04",
+        "end_date": null
+      },
+      "E4": {
+        "start_date": "2021-12-12",
+        "end_date": null
+      },
+      "E5": {
+        "start_date": "2016-02-29",
+        "end_date": "2022-10-31"
+      },
+      "E6": {
+        "start_date": "2017-03-03",
+        "end_date": null
+      }
+    },
+    "required_tools": {
+      "start_date": [
+        "normalize_date"
+      ],
+      "end_date": [
+        "normalize_date"
+      ]
+    }
+  },
+  {
+    "id": "CLN03",
+    "name": "dates_conflicting_evidence",
+    "description": "File contains BOTH day-first (14/03) and month-first (03/25) proof: 04/05/2019 is unknowable and must be flagged.",
+    "file": "CLN03_dates_conflicting_evidence.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Start": {
+        "target_field": "start_date",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "start_date": "2019-03-14"
+      },
+      "E2": {
+        "start_date": "2019-03-25"
+      },
+      "E3": {
+        "start_date": {
+          "flag": true
+        }
+      },
+      "E4": {
+        "start_date": "2020-01-15"
+      }
+    },
+    "required_tools": {
+      "start_date": [
+        "normalize_date"
+      ]
+    }
+  },
+  {
+    "id": "CLN04",
+    "name": "phones_e164",
+    "description": "Trunk prefixes, spaces, brackets, foreign country codes (must be kept), junk (must be flagged).",
+    "file": "CLN04_phones_e164.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Phone": {
+        "target_field": "phone",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "phone": "+919845012345"
+      },
+      "E2": {
+        "phone": "+919845012346"
+      },
+      "E3": {
+        "phone": "+919845012347"
+      },
+      "E4": {
+        "phone": "+442079460958"
+      },
+      "E5": {
+        "phone": "+16502530000"
+      },
+      "E6": {
+        "phone": {
+          "flag": true
+        }
+      },
+      "E7": {
+        "phone": {
+          "flag": true
+        }
+      },
+      "E8": {
+        "phone": "+919845012348"
+      }
+    },
+    "required_tools": {
+      "phone": [
+        "normalize_phone"
+      ]
+    }
+  },
+  {
+    "id": "CLN05",
+    "name": "salary_formats",
+    "description": "Rupee/dollar/euro symbols, Indian lakh grouping, currency words, decimals; non-numeric junk must be flagged.",
+    "file": "CLN05_salary_formats.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Annual Pay": {
+        "target_field": "annual_salary",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "annual_salary": 850000
+      },
+      "E2": {
+        "annual_salary": 950000
+      },
+      "E3": {
+        "annual_salary": 1200000
+      },
+      "E4": {
+        "annual_salary": 95000
+      },
+      "E5": {
+        "annual_salary": 45000.5
+      },
+      "E6": {
+        "annual_salary": {
+          "flag": true
+        }
+      },
+      "E7": {
+        "annual_salary": 1200000
+      },
+      "E8": {
+        "annual_salary": 60000
+      }
+    },
+    "required_tools": {
+      "annual_salary": [
+        "parse_amount"
+      ]
+    }
+  },
+  {
+    "id": "CLN06",
+    "name": "fullname_split_and_monthly",
+    "description": "'LAST, First', double spaces, 3-part names, a single-word name (flag), and monthly pay converted to annual (x12).",
+    "file": "CLN06_fullname_split_and_monthly.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "Full Name": {
+        "target_field": "first_name",
+        "transform": "split_full_name"
+      },
+      "Monthly Pay": {
+        "target_field": "annual_salary",
+        "transform": "monthly_to_annual"
+      }
+    },
+    "expected": {
+      "E1": {
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "annual_salary": 540000
+      },
+      "E2": {
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "annual_salary": 624006
+      },
+      "E3": {
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "annual_salary": 456000
+      },
+      "E4": {
+        "first_name": "Ravi",
+        "last_name": "Shankar Iyer",
+        "annual_salary": 732000
+      },
+      "E5": {
+        "first_name": {
+          "flag": true
+        },
+        "annual_salary": 360000
+      }
+    },
+    "required_tools": {
+      "first_name": [
+        "normalize_name"
+      ],
+      "last_name": [
+        "normalize_name"
+      ],
+      "annual_salary": [
+        "parse_amount"
+      ]
+    }
+  },
+  {
+    "id": "CLN07",
+    "name": "names_and_text_hygiene",
+    "description": "ALL-CAPS/lower names fixed; McDonald, de Souza, Siobhán, O'Connor handled; NBSP / zero-width / double spaces stripped; digits in a name flagged.",
+    "file": "CLN07_names_and_text_hygiene.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "First": {
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Last": {
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Dept": {
+        "target_field": "department",
+        "transform": "direct"
+      },
+      "Title": {
+        "target_field": "job_title",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "department": "Engineering",
+        "job_title": "Software Engineer"
+      },
+      "E2": {
+        "first_name": "Vikram",
+        "last_name": "O'Connor",
+        "department": "Sales",
+        "job_title": "Account Executive"
+      },
+      "E3": {
+        "first_name": "Siobhán",
+        "last_name": "McDonald",
+        "department": "Support",
+        "job_title": "Support Lead"
+      },
+      "E4": {
+        "first_name": "Zoë",
+        "last_name": "de Souza",
+        "department": "Design",
+        "job_title": "Designer"
+      },
+      "E5": {
+        "first_name": "Jean-Luc",
+        "last_name": "Picard",
+        "department": "Operations",
+        "job_title": "Operations Head"
+      },
+      "E6": {
+        "first_name": "Mary Ann",
+        "last_name": "Smith",
+        "department": "Sales & Marketing",
+        "job_title": "Sr. Engineer"
+      },
+      "E7": {
+        "first_name": {
+          "flag": true
+        },
+        "last_name": "Droid",
+        "department": "Robotics",
+        "job_title": "Technician"
+      }
+    },
+    "required_tools": {
+      "first_name": [
+        "normalize_name"
+      ],
+      "last_name": [
+        "normalize_name"
+      ],
+      "department": [],
+      "job_title": []
+    }
+  },
+  {
+    "id": "CLN08",
+    "name": "email_status_manager_resolution",
+    "description": "Email cleanup, status enum mapping (an unknown status must be flagged, never guessed), manager NAMES resolved to ids ('Last, First' and lower-case ids included; an unknown name flagged).",
+    "file": "CLN08_email_status_manager_resolution.csv",
+    "mapping": {
+      "Emp ID": {
+        "target_field": "employee_id",
+        "transform": "direct"
+      },
+      "First": {
+        "target_field": "first_name",
+        "transform": "direct"
+      },
+      "Last": {
+        "target_field": "last_name",
+        "transform": "direct"
+      },
+      "Email": {
+        "target_field": "email",
+        "transform": "direct"
+      },
+      "Status": {
+        "target_field": "employment_status",
+        "transform": "direct"
+      },
+      "Manager": {
+        "target_field": "manager_employee_id",
+        "transform": "direct"
+      }
+    },
+    "expected": {
+      "E1": {
+        "email": "rahul.mehta@corp.com",
+        "employment_status": "active",
+        "manager_employee_id": null
+      },
+      "E2": {
+        "email": "asha.rao@corp.com",
+        "employment_status": "active",
+        "manager_employee_id": "E1"
+      },
+      "E3": {
+        "email": "vikram@corp.com",
+        "employment_status": "on_leave",
+        "manager_employee_id": "E1"
+      },
+      "E4": {
+        "email": {
+          "flag": true
+        },
+        "employment_status": "on_leave",
+        "manager_employee_id": "E2"
+      },
+      "E5": {
+        "email": "karthik@corp.com",
+        "employment_status": "resigned",
+        "manager_employee_id": {
+          "flag": true
+        }
+      },
+      "E6": {
+        "email": "divya@corp.com",
+        "employment_status": {
+          "flag": true
+        },
+        "manager_employee_id": "E3"
+      },
+      "E7": {
+        "email": "meena@corp.com",
+        "employment_status": "terminated",
+        "manager_employee_id": "E5"
+      }
+    },
+    "required_tools": {
+      "first_name": [
+        "normalize_name"
+      ],
+      "last_name": [
+        "normalize_name"
+      ],
+      "email": [
+        "normalize_email"
+      ],
+      "employment_status": [
+        "normalize_status"
+      ],
+      "manager_employee_id": [
+        "resolve_employee_reference"
+      ]
+    }
+  }
+]

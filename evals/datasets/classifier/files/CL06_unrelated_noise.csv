@@ -1,0 +1,5 @@
+Emp ID,First,Last,Work Email,Parking Slot,Laptop Serial,Cafeteria Card No,Emergency Contact Name,Emergency Contact No,Shift Pattern,Badge Colour
+N-01,Tara,Bose,tara.bose@vega.io,P-12,LT-88231,CF-1001,Rina Bose,9830011111,Day,Blue
+N-02,Omar,Sheikh,omar.sheikh@vega.io,P-40,LT-88232,CF-1002,Zara Sheikh,9830022222,Night,Green
+N-03,Lena,Fischer,lena.fischer@vega.io,P-07,LT-88233,CF-1003,Karl Fischer,9830033333,Day,Blue
+N-04,Dev,Patel,dev.patel@vega.io,P-31,LT-88234,CF-1004,Nisha Patel,9830044444,Rotating,Red

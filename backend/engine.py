@@ -1,267 +1,385 @@
+"""Run lifecycle: ingest -> profile -> (agents) -> build/evaluate/settle -> human decisions -> push/rollback.
+Everything here is deterministic and PII-safe in traces; the LLM agents live in agents.py and are orchestrated in graph.py."""
 from __future__ import annotations
 
-import csv
-import re
 import uuid
+from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
+
+from . import checks
 from .observability import Observability
-from .policies import ALIASES, COMPOSITE_SOURCE_ALIASES, REQUIRED_FIELDS, authorize_target_write, classify_header, normalize_header
+from .pipeline import REGION, build_records, column_key, sample_raw
+from .policies import CLEAN_MIN, REQUIRED_FIELDS, TARGET_FIELDS, TARGET_SCHEMA, authorize_target_write, classify_header
 from .store import Store
+from .tools import FORMAT_TOOL, TOOLS, Cell, clean_text, run_tools, safe_plan
+
+OPEN, DECIDED = "open", {"approved", "corrected", "rejected"}
+ENUM_STATUS = TARGET_SCHEMA["properties"]["employment_status"]["enum"]
 
 
 class MigrationEngine:
     def __init__(self, store: Store, fixtures_dir: str = "data/fixtures") -> None:
         self.store, self.fixtures_dir, self.obs = store, Path(fixtures_dir), Observability()
 
-    def _event(self, run: dict[str, Any], stage: str, message: str, **metrics: Any) -> None:
+    # ------------------------------------------------------------------ bookkeeping
+    def load(self, run_id: str) -> dict[str, Any] | None:
+        return self.store.get_run(run_id)
+
+    def save(self, run: dict[str, Any]) -> None:
+        self.store.save_run(run)
+
+    def event(self, run: dict[str, Any], stage: str, message: str, **metrics: Any) -> None:
         run["events"].append({"at": datetime.now(UTC).isoformat(), "stage": stage, "message": message, "metrics": metrics})
         self.obs.emit(stage, run["id"], metrics)
 
     def create_run(self, source_files: list[dict[str, str]] | None = None) -> dict[str, Any]:
-        run = {"id": str(uuid.uuid4()), "status": "created", "batch_id": str(uuid.uuid4()), "events": [], "escalations": [], "records": [], "mapping": {}, "source_headers": [], "source_files": source_files or []}
+        run = {"id": str(uuid.uuid4()), "batch_id": str(uuid.uuid4()), "status": "created", "source_files": source_files or [], "source_headers": [],
+               "source_rows": [], "profiles": [], "classifications": [], "cleaning_plan": [], "records": [], "escalations": [], "warnings": [], "llm_warnings": [],
+               "events": [], "retry_log": [], "overrides": {}, "waivers": [], "excluded": [], "merges": [], "outcomes": [], "summary": {}, "unmapped_required": []}
         self.store.save_run(run)
         return run
 
-    def ingest(self, run_id: str) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        rows, headers = self._load(run.get("source_files"))
-        # Source rows stay in application storage; graph/trace state holds only the run ID.
-        run["source_headers"] = headers
-        run["source_rows"] = rows
-        run["status"] = "profiling"
-        source_count = len(run["source_files"]) or len(list(self.fixtures_dir.glob("*.csv")))
-        self._event(run, "ingest", "Ingested source exports", source_files=source_count, source_rows=len(rows))
-        self.store.save_run(run)
-        return run
-
-    def profile(self, run_id: str) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        headers = run.get("source_headers", [])
-        self._event(run, "profile", "Profiled schema and masked value shapes", unique_headers=len(set(headers)), sensitive_headers=sum(classify_header(h) == "sensitive" for h in headers))
-        self.store.save_run(run)
-        return run
-
-    def seed_mapping(self, run_id: str) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        run["mapping"], run["escalations"] = self._map_headers(run.get("source_headers", []), run.get("source_rows", []))
-        self._event(run, "mapping_seed", "Created conservative mapping candidates", mapped_fields=len(run["mapping"]), escalations=len(run["escalations"]))
-        self.store.save_run(run)
-        return run
-
-    def apply_agent_proposal(self, run_id: str, proposals: list[dict[str, Any]], model: str, fallback: bool = False) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        allowed_targets = set(ALIASES)
-        headers = set(run.get("source_headers", []))
-        accepted = 0
-        for proposal in proposals:
-            source, target = proposal.get("source_header"), proposal.get("target_field")
-            confidence = float(proposal.get("confidence", 0))
-            if source not in headers or target not in allowed_targets or classify_header(source) == "sensitive":
-                continue
-            if confidence >= 0.85:
-                run["mapping"][source] = target
-                accepted += 1
-            elif not any(e.get("field") == source and e["status"] == "open" for e in run["escalations"]):
-                run["escalations"].append({"id": str(uuid.uuid4()), "type": "low_confidence_mapping", "field": source, "candidates": [target], "status": "open", "reason": proposal.get("rationale", "AI confidence did not clear the autonomous threshold")})
-        run["agent"] = {"model": model, "mode": "deterministic_fallback" if fallback else "gemini", "proposal_count": len(proposals)}
-        self._event(run, "mapping_agent", "Generated structured mapping proposal", model=model, proposals=len(proposals), accepted=accepted, fallback=fallback)
-        self.store.save_run(run)
-        return run
-
-    def transform_and_validate(self, run_id: str) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        run["records"] = self._reconcile(run["mapping"], run.get("source_rows"))
-        invalid = [record for record in run["records"] if REQUIRED_FIELDS - set(key for key, value in record.items() if value)]
-        self._event(run, "transform", "Normalized and reconciled source rows", reconciled_records=len(run["records"]))
-        self._event(run, "quality_evaluator", "Validated records against target schema", valid_records=len(run["records"]) - len(invalid), invalid_records=len(invalid))
-        self.store.save_run(run)
-        return run
-
-    def route(self, run_id: str) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        run["status"] = "needs_review" if any(e["status"] == "open" for e in run["escalations"]) else "ready_to_push"
-        self._event(run, "policy_router", "Selected next graph route", route=run["status"])
-        self.store.save_run(run)
-        return run
-
-    def _load(self, source_files: list[dict[str, str]] | None = None) -> tuple[list[dict[str, str]], list[str]]:
-        rows, headers = [], []
-        paths = [Path(item["path"]) for item in source_files] if source_files else sorted(self.fixtures_dir.glob("*.csv"))
-        for path in paths:
+    # ------------------------------------------------------------------ ingest + profile
+    def _tables(self, files: list[dict[str, str]]) -> list[tuple[str, pd.DataFrame]]:
+        paths = [(f["name"], Path(f["path"])) for f in files] if files else [(p.name, p) for p in sorted(self.fixtures_dir.glob("*.csv"))]
+        out: list[tuple[str, pd.DataFrame]] = []
+        for name, path in paths:
             if path.suffix.lower() == ".csv":
-                with path.open(newline="", encoding="utf-8-sig") as handle:
-                    reader = csv.DictReader(handle)
-                    headers.extend(reader.fieldnames or [])
-                    rows.extend({**row, "_source": path.name} for row in reader)
-            elif path.suffix.lower() in {".xlsx", ".xlsm"}:
-                from openpyxl import load_workbook
-                book = load_workbook(path, read_only=True, data_only=True)
-                sheet = book.active
-                values = sheet.iter_rows(values_only=True)
-                header_row = next(values, ())
-                fieldnames = [str(value).strip() if value is not None else "" for value in header_row]
-                headers.extend(fieldnames)
-                for raw_row in values:
-                    rows.append({**{fieldnames[index]: "" if value is None else str(value) for index, value in enumerate(raw_row) if index < len(fieldnames) and fieldnames[index]}, "_source": path.name})
-                book.close()
-        return rows, headers
-
-    def _map_headers(self, headers: list[str], source_rows: list[dict[str, str]] | None = None) -> tuple[dict[str, str], list[dict[str, Any]]]:
-        mapping, escalations = {}, []
-        for header in sorted(set(headers)):
-            if header == "_source":
-                continue
-            if classify_header(header) == "sensitive":
-                escalations.append({"id": str(uuid.uuid4()), "type": "sensitive_column", "field": header, "status": "open", "reason": "Unexpected sensitive source column was quarantined", "context": {"source_values": ["Sensitive values hidden by policy"], "policy": "Quarantine or explicitly reject this column; its values are never sent to Gemini."}})
-                continue
-            key = normalize_header(header)
-            candidates = [target for target, aliases in ALIASES.items() if key in aliases]
-            if key in COMPOSITE_SOURCE_ALIASES:
-                mapping[header] = "__full_name__"
-                continue
-            if header == "Start":
-                candidates = ["start_date", "job_title"]  # intentional demo ambiguity
-            if len(candidates) == 1:
-                mapping[header] = candidates[0]
-            elif len(candidates) > 1:
-                samples = self._source_preview(header, source_rows)
-                escalations.append({"id": str(uuid.uuid4()), "type": "ambiguous_mapping", "field": header, "candidates": candidates, "status": "open", "reason": "Top mapping candidates have insufficient confidence margin", "context": {"affected_record_count": len([row for row in (source_rows or []) if row.get(header)]), "sample_rows": samples, "policy": "Select one target field. Applying it will map this source column for every affected record."}})
+                try:
+                    frames = {None: pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig")}
+                except UnicodeDecodeError:
+                    frames = {None: pd.read_csv(path, dtype=str, keep_default_na=False, encoding="cp1252")}
             else:
-                escalations.append({"id": str(uuid.uuid4()), "type": "unmapped_column", "field": header, "status": "open", "reason": "No safe target field was identified for this source column", "context": {"affected_record_count": len([row for row in (source_rows or []) if row.get(header)]), "sample_rows": self._source_preview(header, source_rows), "policy": "Reject/quarantine this column, or extend the versioned target schema before mapping it."}})
-        return mapping, escalations
+                frames = pd.read_excel(path, sheet_name=None, dtype=str, keep_default_na=False)
+            for sheet, df in frames.items():
+                df.columns = [str(c).strip() for c in df.columns]
+                df = df.loc[:, [c for c in df.columns if not (c.startswith("Unnamed:") and (df[c] == "").all())]]
+                df = df[(df.apply(lambda col: col.astype(str).str.strip()) != "").any(axis=1)]
+                label = name if sheet is None or len(frames) == 1 else f"{name}[{sheet}]"
+                while any(label == x[0] for x in out):
+                    label += "'"
+                out.append((label, df))
+        return out
 
-    def _source_preview(self, header: str, source_rows: list[dict[str, str]] | None = None) -> list[dict[str, str]]:
-        """Context shown to the assigned consultant; sensitive source fields are never previewed."""
-        if classify_header(header) == "sensitive":
-            return [{"record": "Sensitive field", "value": "Values hidden by policy"}]
-        rows = source_rows if source_rows is not None else self._load()[0]
-        identifier_headers = ("Employee ID", "Staff ID", "Emp ID", "ID", "employee_id")
-        preview = []
-        for index, row in enumerate(rows, start=2):
-            if not row.get(header):
-                continue
-            record_id = next((str(row[key]) for key in identifier_headers if row.get(key)), f"Row {index}")
-            preview.append({"record": record_id, "value": str(row[header])[:80]})
-            if len(preview) == 3:
-                break
-        return preview
+    def ingest(self, run: dict[str, Any]) -> None:
+        rows, headers, profiles = [], [], []
+        for name, df in self._tables(run["source_files"]):
+            file_rows = [{**{k: str(v) for k, v in rec.items()}, "_source": name, "_source_row": f"{name}:{i}"} for i, rec in zip(df.index + 2, df.to_dict("records"))]
+            rows += file_rows
+            for h in df.columns:
+                headers.append(h)
+                vals = list(dict.fromkeys(str(r[h]).strip() for r in file_rows if str(r[h]).strip()))
+                sensitive = classify_header(h) == "sensitive"
+                profiles.append({"key": column_key(name, h), "file": name, "header": h, "samples": ["<withheld>"] if sensitive else vals[:3],
+                                 "non_empty": sum(1 for r in file_rows if str(r[h]).strip()), "rows": len(file_rows), "sensitive": sensitive})
+        run.update(source_rows=rows, source_headers=headers, profiles=profiles, status="processing")
+        self.event(run, "ingest", f"Read {len({p['file'] for p in profiles})} source file(s): {len(rows)} rows, {len(profiles)} columns", source_files=len({p["file"] for p in profiles}), source_rows=len(rows), columns=len(profiles))
+
+    # ------------------------------------------------------------------ classification bookkeeping
+    def merge_classifications(self, run: dict, items: list[dict], pending: set[str]) -> None:
+        by_key = {p["key"]: p for p in run["profiles"]}
+        current = {c["key"]: c for c in run["classifications"]}
+        for it in items:
+            key = column_key(it.get("source_file", ""), it.get("source_header", ""))
+            if key in pending and key in by_key:
+                current[key] = {**it, "key": key, "status": "pending"}
+        for key in pending:        # guardrail: sensitive columns are never mapped, whatever the model said
+            if by_key[key]["sensitive"]:
+                current[key] = self._forced_ignore(by_key[key], "Sensitive column (bank / government ID / health): never migrated.")
+        run["classifications"] = [current[p["key"]] for p in run["profiles"] if p["key"] in current]
 
     @staticmethod
-    def _normalise(record: dict[str, str]) -> dict[str, str]:
-        output = {key: value.strip() for key, value in record.items() if value is not None}
-        if output.get("email"):
-            output["email"] = output["email"].lower()
-        if output.get("employment_status"):
-            output["employment_status"] = output["employment_status"].lower().replace(" ", "_")
-        if output.get("__full_name__"):
-            full_name = re.sub(r"\s+", " ", output.pop("__full_name__")).strip()
-            romanized = re.search(r"\(([^()]+)\)", full_name)
-            name_for_split = romanized.group(1).strip() if romanized else full_name
-            pieces = name_for_split.split(" ")
-            if len(pieces) >= 2:
-                output.setdefault("first_name", pieces[0].title())
-                output.setdefault("last_name", " ".join(pieces[1:]).title())
+    def _forced_ignore(p: dict, why: str) -> dict:
+        return {"key": p["key"], "source_file": p["file"], "source_header": p["header"], "target_field": None, "transform": "ignore", "confidence": 1.0, "rationale": why, "alternatives": [], "status": "ignored"}
+
+    def finalize_classification(self, run: dict, issues: dict[str, list[str]]) -> None:
+        have = {c["key"] for c in run["classifications"]}
+        for p in run["profiles"]:
+            if p["key"] not in have:
+                run["classifications"].append({**self._forced_ignore(p, "No classification was returned."), "confidence": 0.0, "status": "pending"})
+        esc = []
+        for c in run["classifications"]:
+            k = c["key"]
+            if k in issues and not (c["status"] == "ignored" and c["confidence"] == 1.0):
+                c["status"] = "needs_review"
+                cands = list(dict.fromkeys(t for t in [c.get("target_field"), *c.get("alternatives", [])] if t in TARGET_FIELDS)) or sorted(TARGET_FIELDS)
+                proposal = f"may map to {c['target_field']}" if c.get("target_field") else "could not be classified"
+                esc.append({"id": str(uuid.uuid4()), "key": f"col:{k}", "scope": "column", "type": "ambiguous_mapping", "field": c["source_header"], "source_file": c["source_file"], "column_key": k,
+                            "status": OPEN, "reason": f"{c['source_header']} ({c['source_file']}) {proposal}, but: {' '.join(issues[k][:2])}", "candidates": cands,
+                            "context": {"sample_rows": next((p["samples"] for p in run["profiles"] if p["key"] == k), []), "policy": "Pick the target field only if it is semantically correct; otherwise Reject to skip this column."}})
+            elif c["target_field"] is None or c["transform"] == "ignore":
+                c["status"] = "ignored"
             else:
-                output["full_name_unresolved"] = full_name
-        for date_field in ("start_date", "date_of_birth", "end_date"):
-            if not output.get(date_field):
+                c["status"] = "accepted"
+        run["escalations"] = [e for e in run["escalations"] if e["scope"] != "column"] + esc
+        self.event(run, "classifier_validator", f"Classification settled: {sum(c['status']=='accepted' for c in run['classifications'])} mapped, {sum(c['status']=='ignored' for c in run['classifications'])} ignored, {len(esc)} sent to human review",
+                   mapped=sum(c["status"] == "accepted" for c in run["classifications"]), review=len(esc))
+
+    def accepted_targets(self, run: dict, file: str | None = None) -> set[str]:
+        out: set[str] = set()
+        for c in run["classifications"]:
+            if c["status"] == "accepted" and c.get("target_field") and (file is None or c["source_file"] == file):
+                out.add(c["target_field"])
+                if c["transform"] == "split_full_name":
+                    out.add("last_name")
+        return out
+
+    def plannable_fields(self, run: dict) -> list[dict]:
+        return [{"target_field": f, "samples": sample_raw(run, f)} for f in sorted(self.accepted_targets(run))]
+
+    # ------------------------------------------------------------------ build / evaluate / settle
+    def ensure_plan(self, run: dict) -> None:
+        planned = {p["target_field"] for p in run["cleaning_plan"]}
+        for f in sorted(self.accepted_targets(run) - planned):
+            run["cleaning_plan"].append({"target_field": f, "tools": safe_plan(f), "confidence": 0.9, "rationale": "Deterministic schema-driven plan."})
+
+    def build(self, run: dict) -> None:
+        run["records"] = build_records(run, TARGET_SCHEMA)
+        fixes = Counter(f for r in run["records"] for f in FORMAT_TOOL if r.get(f) not in (None, "") and str(r[f]) != str(r.get(f"_raw_{f}", r[f])))
+        self.event(run, "cleaner", f"Built {len(run['records'])} record(s) from {len(run['source_rows'])} source rows; applied the tool plan", records=len(run["records"]), **{f"fixed_{k}": v for k, v in sorted(fixes.items())})
+
+    def evaluate(self, run: dict, validator: Any = None) -> list[dict]:
+        plan = {p["target_field"]: p["tools"] for p in run["cleaning_plan"]}
+        run["unmapped_required"] = sorted(REQUIRED_FIELDS - self.accepted_targets(run))
+        if validator:
+            findings = validator.review_records(run, run["records"], plan)
+        else:
+            findings = checks.validate_records(run["records"], plan, set(run["unmapped_required"]), set(run["waivers"]))
+        return [f for f in findings if f["key"] not in set(run["waivers"])]
+
+    def settle(self, run: dict, findings: list[dict], llm_warnings: list[dict] | None = None) -> None:
+        if llm_warnings is not None:
+            run["llm_warnings"] = llm_warnings
+        errors = [f for f in findings if f["severity"] == "error"]
+        cols = [e for e in run["escalations"] if e["scope"] == "column"]
+        existing = {e["key"]: e for e in run["escalations"] if e["scope"] == "record"}
+        groups: dict[str, list[dict]] = {}          # one card per (record, root cause)
+        for f in errors:
+            groups.setdefault(f["key"] if f["group"] == f["field"] else f"{f['type']}:{f['subject']}:{f['group']}", []).append(f)
+        now: dict[str, list[dict]] = groups
+        recs = []
+        for k, fs in now.items():
+            card = self._card(run, k, fs)
+            if k in existing:
+                e = existing[k]
+                if e["status"] == "auto_resolved":
+                    e["status"] = OPEN
+                if e["status"] == OPEN:
+                    e.update({key: v for key, v in card.items() if key not in ("id", "status")})
+                recs.append(e)
+            else:
+                recs.append(card)
+        for k, e in existing.items():
+            if k not in now:
+                if e["status"] == OPEN:
+                    e["status"] = "auto_resolved"
+                recs.append(e)
+        run["escalations"] = self._sync_missing_required(run, cols) + recs
+        run["warnings"] = run.get("llm_warnings", []) + checks.soft_flags(run["records"])
+        blocked = self.blocked(run)
+        rejected = {e["record_id"] for e in run["escalations"] if e["scope"] == "record" and e["status"] == "rejected"} | set(run["excluded"])
+        for r in run["records"]:
+            s = str(r.get("employee_id") or r["_source_row"])
+            r["_status"] = "rejected" if s in rejected else "needs_review" if s in blocked else "approved"
+        run["summary"] = {"source_rows": len(run["source_rows"]), "records": len(run["records"]), "approved": sum(r["_status"] == "approved" for r in run["records"]),
+                          "needs_review": sum(r["_status"] == "needs_review" for r in run["records"]), "rejected": sum(r["_status"] == "rejected" for r in run["records"]),
+                          "open_escalations": sum(e["status"] == OPEN for e in run["escalations"]), "merged": len(run.get("merges", [])), "warnings": len(run["warnings"]),
+                          "auto_fixes": dict(Counter(f for r in run["records"] for f in FORMAT_TOOL if r.get(f) not in (None, "") and str(r[f]) != str(r.get(f"_raw_{f}", r[f]))))}
+
+    ACTIONS = {"approved": "Apply suggested fix", "corrected": "Correct value", "rejected": "Reject record", "merged": "Merge", "keep_both": "Keep both"}
+
+    def _card(self, run: dict, key: str, fs: list[dict]) -> dict:
+        f0, subject = fs[0], fs[0]["subject"]
+        rec = next((r for r in run["records"] if str(r.get("employee_id") or r["_source_row"]) == subject), {})
+        fields = list(dict.fromkeys(f["field"] for f in fs))
+        if fields == ["record"]:
+            fields = [f for f in TARGET_SCHEMA["properties"] if rec.get(f) not in (None, "")]
+        shown = [{"field": f, "source": str(rec.get(f"_raw_{f}") or ""), "cleaned": "" if rec.get(f) is None else rec.get(f)} for f in fields]
+        sug = next((f["suggestion"] for f in fs if f["suggestion"]), None)
+        if f0["type"] == "identity_collision":
+            acts = ["merged", "keep_both", "rejected"]
+        elif f0["type"] == "missing_required_value":
+            acts = ["corrected", "rejected"]
+        else:
+            acts = ["approved", "corrected", "rejected"]
+        actions = [{"action": a, "label": "Approve as-is" if a == "approved" and not (sug and (sug["changes"] or sug["action"])) else self.ACTIONS[a],
+                    "default": a == acts[0]} for a in acts]
+        return {"id": str(uuid.uuid4()), "key": key, "scope": "record", "record_id": subject, "type": f0["type"], "field": f0["field"], "fields": fields,
+                "finding_keys": [f["key"] for f in fs], "status": OPEN, "reason": " ".join(dict.fromkeys(f["feedback"] for f in fs)), "candidates": f0["candidates"],
+                "suggested_fix": sug, "actions": actions,
+                "context": {"sample_rows": [{"employee_id": subject, "field": x["field"], "source_value": x["source"], "cleaned_value": x["cleaned"]} for x in shown],
+                            "fields": shown, "related": f0["related"], "policy": checks.POLICY.get(f0["type"], ""), **f0["context"]}}
+
+    def _sync_missing_required(self, run: dict, cols: list[dict]) -> list[dict]:
+        accepted = self.accepted_targets(run)
+        proposed = {c["target_field"] for c in run["classifications"] if c["status"] == "needs_review" and c.get("target_field")}
+        wanted: dict[str, tuple[str, str | None]] = {f"missing:{f}": (f, None) for f in sorted(REQUIRED_FIELDS - accepted - proposed - {"employee_id"})}
+        for file in dict.fromkeys(p["file"] for p in run["profiles"]):
+            got = self.accepted_targets(run, file) | {c["target_field"] for c in run["classifications"] if c["source_file"] == file and c["status"] == "needs_review" and c.get("target_field")}
+            if "employee_id" not in got:
+                wanted[f"missing:employee_id:{file}"] = ("employee_id", file)
+        out, have = [], set()
+        for e in cols:
+            if e["type"] == "missing_required_target":
+                have.add(e["key"])
+                if e["key"] not in wanted and e["status"] == OPEN:
+                    e["status"] = "auto_resolved"
+            out.append(e)
+        for key, (f, file) in wanted.items():
+            if key in have:
                 continue
-            for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%m/%d/%Y", "%d %b %Y", "%d-%b-%Y"):
-                try:
-                    output[date_field] = datetime.strptime(output[date_field], fmt).date().isoformat()
-                    break
-                except ValueError:
-                    pass
-        return output
+            cands = [c["key"] for c in run["classifications"] if c["status"] in {"ignored", "needs_review"} and (file is None or c["source_file"] == file) and classify_header(c["source_header"]) != "sensitive"]
+            out.append({"id": str(uuid.uuid4()), "key": key, "scope": "column", "type": "missing_required_target", "field": f, "source_file": file or "", "status": OPEN,
+                        "reason": f"No source column was confidently mapped to required field {f}" + (f" in {file}." if file else "."), "candidates": cands,
+                        "context": {"policy": "Pick the source column that holds this field, or upload a corrected file. Nothing is guessed."}})
+        return out
 
-    def _reconcile(self, mapping: dict[str, str], source_rows: list[dict[str, str]] | None = None) -> list[dict[str, str]]:
-        """Merge rows without allowing an empty alias to overwrite a known value."""
-        rows = source_rows if source_rows is not None else self._load()[0]
-        by_email: dict[str, dict[str, str]] = {}
-        for source in rows:
-            mapped: dict[str, str] = {}
-            for header, target in mapping.items():
-                value = source.get(header)
-                if value:
-                    mapped[target] = value
-            record = self._normalise(mapped)
-            email = record.get("email", "")
-            if email and email in by_email:
-                by_email[email].update({key: value for key, value in record.items() if value})
-            else:
-                by_email[email] = record
-        return list(by_email.values())
+    def blocked(self, run: dict) -> set[str]:
+        return {e["record_id"] for e in run["escalations"] if e["scope"] == "record" and e["status"] in {OPEN, "rejected"}} | set(run["excluded"])
 
-    def start_demo(self) -> dict[str, Any]:
-        """Compatibility helper for deterministic tests; HTTP uses the LangGraph workflow."""
-        run = self.create_run()
-        self.ingest(run["id"])
-        self.profile(run["id"])
-        self.seed_mapping(run["id"])
-        self.transform_and_validate(run["id"])
-        return self.route(run["id"]) or run
+    def rebuild(self, run: dict) -> None:
+        """Deterministic replay used after every human decision (no LLM calls)."""
+        self.ensure_plan(run)
+        self.build(run)
+        self.settle(run, self.evaluate(run))
+        run["status"] = "ready_to_push"
 
-    def resolve(self, run_id: str, escalation_id: str, action: str, selected_value: str | None = None) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
+    # ------------------------------------------------------------------ human decisions
+    def _clean_override(self, run: dict, field: str, value: str) -> Any:
+        if field == "employee_id":
+            raise ValueError("employee_id cannot be edited; reject the record instead")
+        if value.strip() == "":
+            if field in REQUIRED_FIELDS:
+                raise ValueError(f"{field} is required and cannot be blank")
             return None
+        if field == "manager_employee_id":
+            ids = {str(r["employee_id"]).upper(): str(r["employee_id"]) for r in run["records"] if r.get("employee_id")}
+            if value.strip().upper() not in ids:
+                raise ValueError(f"{value} is not an employee id in this migration")
+            return ids[value.strip().upper()]
+        tool = FORMAT_TOOL.get(field)
+        cell = Cell(clean_text(value), value)
+        cell = run_tools(field, cell, [tool] if tool and TOOLS[tool].stage == "cell" else [], {"region": REGION, "enum": ENUM_STATUS, "dayfirst": None}, "cell")
+        if (msg := checks.intrinsic_issue(field, cell.value)) or cell.confidence < CLEAN_MIN:
+            raise ValueError(f"'{value}' is not a valid {field}: {msg or cell.note}")
+        return cell.value
+
+    def resolve(self, run: dict, escalation_id: str, action: str, selected_value: str | None = None, field: str | None = None) -> None:
         item = next((e for e in run["escalations"] if e["id"] == escalation_id), None)
         if not item:
-            return None
+            raise LookupError(f"Escalation {escalation_id} not found")
+        if item["scope"] == "column":
+            if action in {"merged", "keep_both"}:
+                raise ValueError("Merge / keep both only apply to duplicate-record cards")
+            self._resolve_column(run, item, action, selected_value)
+            detail = f"Consultant {action} a {item['type'].replace('_', ' ')} item"
+        else:
+            detail = self._resolve_record(run, item, action, selected_value, field)
         item["status"], item["resolution"] = action, selected_value
-        if action == "approved" and item["type"] == "ambiguous_mapping" and selected_value:
-            run["mapping"][item["field"]] = selected_value
-            run["records"] = self._reconcile(run["mapping"], run.get("source_rows"))
-        if all(e["status"] != "open" for e in run["escalations"]):
-            run["status"] = "ready_to_push"
-        self._event(run, "review", "Human resolved escalation", action=action, escalation_type=item["type"])
-        self.store.save_run(run)
-        return run
+        self.event(run, "human_review", detail, action=action, scope=item["scope"], type=item["type"])
+        self.rebuild(run)
 
-    def push(self, run_id: str, retry: bool = False) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
-        unresolved = sum(e["status"] == "open" for e in run["escalations"])
+    def _resolve_record(self, run: dict, item: dict, action: str, selected: str | None, field: str | None) -> str:
+        subject, sug, keys = item["record_id"], item.get("suggested_fix"), item.get("finding_keys") or [item["key"]]
+        label = item["type"].replace("_", " ")
+        if action in {"merged", "keep_both"} and item["type"] != "identity_collision":
+            raise ValueError("Merge / keep both only apply to duplicate-record cards")
+        if action == "approved" and selected not in (None, "") and item.get("candidates"):      # a candidate picked in the UI is a correction
+            action, field = "corrected", field or item["field"]
+        if action == "approved" and sug and sug.get("action") == "merge":
+            action = "merged"
+        if action == "merged":
+            s, d = sug["survivor"], sug["merged"]
+            if selected:
+                if selected not in (s, d):
+                    raise ValueError(f"Survivor must be {s} or {d}")
+                s, d = selected, (d if selected == s else s)
+            run["merges"].append({"survivor": s, "merged": d, "at": datetime.now(UTC).isoformat()})
+            run["overrides"].pop(d, None)
+            return f"Consultant merged duplicate {d} into {s} (survivor: {'lower ID' if not selected else 'chosen by consultant'})"
+        if action == "keep_both":
+            run["waivers"] += keys
+            ids = ", ".join(x["employee_id"] for x in (item["context"].get("related") or [{"employee_id": subject}]))
+            return f"Consultant kept both records as separate employees ({ids}); duplicate check waived"
+        if action == "approved":
+            if sug and sug.get("changes"):
+                for ch in sug["changes"]:
+                    run["overrides"].setdefault(subject, {})[ch["field"]] = self._clean_override(run, ch["field"], ch["to"])
+                return f"Consultant approved the suggested fix for {subject} ({label}: {', '.join(c['field'] for c in sug['changes'])})"
+            run["waivers"] += keys
+            return f"Consultant approved {subject} as-is ({label})"
+        if action == "rejected":
+            run["excluded"].append(subject)
+            return f"Consultant rejected record {subject} ({label}); it will not be pushed"
+        field = field or item["field"]
+        if field not in (item.get("fields") or [item["field"]]):
+            raise ValueError(f"{field} is not part of this card ({', '.join(item.get('fields') or [item['field']])})")
+        if selected is None:
+            raise ValueError("A corrected value is required")
+        run["overrides"].setdefault(subject, {})[field] = self._clean_override(run, field, selected)
+        return f"Consultant corrected {field} on {subject} ({label})"
+
+    def _resolve_column(self, run: dict, item: dict, action: str, selected: str | None) -> None:
+        if item["type"] == "missing_required_target":
+            if action == "rejected":
+                return
+            col = next((c for c in run["classifications"] if c["key"] == selected), None)
+            if not col:
+                raise ValueError("Select one of the listed source columns")
+            target = item["field"]
+        else:
+            col = next((c for c in run["classifications"] if c["key"] == item["column_key"]), None)
+            if col is None:
+                raise LookupError("Column not found")
+            if action == "rejected":
+                col.update(target_field=None, transform="ignore", confidence=1.0, status="ignored", rationale="Human rejected this mapping.")
+                return
+            target = selected or col.get("target_field")
+            if target not in TARGET_FIELDS:
+                raise ValueError(f"{target!r} is not a target schema field")
+        transform = col["transform"] if (col["transform"] == "split_full_name" and target == "first_name") or (col["transform"] == "monthly_to_annual" and target == "annual_salary") else "direct"
+        col.update(target_field=target, transform=transform, confidence=1.0, status="accepted", rationale="Human-reviewed mapping.")
+
+    # ------------------------------------------------------------------ target
+    def push(self, run: dict, retry: bool = False) -> None:
+        """Push guard: a record is written only if it has no pending/rejected card AND still passes validation right now."""
+        pending = self.blocked(run)
+        failed = {f["subject"]: f["feedback"] for f in self.evaluate(run) if f["severity"] == "error"}
         outcomes = []
-        for record in run["records"]:
-            decision = authorize_target_write(record, unresolved, "retry" if retry else "upsert")
+        for rec in run["records"]:
+            eid = rec.get("employee_id")
+            sid = str(eid or rec["_source_row"])
+            if sid in pending or sid in failed:
+                outcomes.append({"employee_id": eid or rec["_source_row"], "status": "blocked",
+                                 "reason": "Awaiting or failed human review" if sid in pending else f"Failed validation: {failed[sid]}"})
+                continue
+            decision = authorize_target_write(rec, set() if eid else {str(rec["_source_row"])}, "retry" if retry else "upsert")
             if not decision.allowed:
-                outcomes.append({"employee_id": record.get("employee_id"), "status": "blocked", "reason": decision.reason})
+                outcomes.append({"employee_id": eid or rec["_source_row"], "status": "blocked", "reason": decision.reason})
                 continue
-            # Deterministic transient failure makes retry visible in the demo.
-            if record.get("employee_id") == "EMP-004" and not retry:
-                outcomes.append({"employee_id": "EMP-004", "status": "failed", "reason": "Mock target timed out"})
-                continue
-            self.store.upsert_target(record, run["batch_id"])
-            outcomes.append({"employee_id": record["employee_id"], "status": "success"})
+            try:
+                self.store.upsert_target({k: v for k, v in rec.items() if not k.startswith("_") and v is not None}, run["batch_id"])   # `_*` = internal audit metadata
+                outcomes.append({"employee_id": eid, "status": "success", "reason": ""})
+                rec["_status"] = "pushed"
+            except Exception as error:  # noqa: BLE001
+                outcomes.append({"employee_id": eid, "status": "failed", "reason": f"Target API error: {type(error).__name__}"})
         run["outcomes"] = outcomes
-        run["status"] = "completed" if all(o["status"] == "success" for o in outcomes) else "push_failed"
-        self._event(run, "push", "Target push completed", successes=sum(o["status"] == "success" for o in outcomes), failures=sum(o["status"] == "failed" for o in outcomes))
-        self.store.save_run(run)
-        return run
+        ok, failed = sum(o["status"] == "success" for o in outcomes), sum(o["status"] == "failed" for o in outcomes)
+        run["status"] = "partial_failure" if failed else "completed_with_review" if any(o["status"] == "blocked" for o in outcomes) else "completed"
+        self.event(run, "target_executor", f"{'Retried' if retry else 'Pushed'}: {ok} succeeded, {sum(o['status']=='blocked' for o in outcomes)} withheld for review, {failed} failed",
+                   successes=ok, blocked=sum(o["status"] == "blocked" for o in outcomes), failed=failed)
 
-    def rollback(self, run_id: str) -> dict[str, Any] | None:
-        run = self.store.get_run(run_id)
-        if not run:
-            return None
+    def rollback(self, run: dict) -> None:
         count = self.store.rollback_batch(run["batch_id"])
+        for o in run["outcomes"]:
+            if o["status"] == "success":
+                o["status"] = "rolled_back"
+        for r in run["records"]:
+            if r.get("_status") == "pushed":
+                r["_status"] = "approved"
         run["status"] = "rolled_back"
-        self._event(run, "rollback", "Rolled back target changes", rolled_back=count)
-        self.store.save_run(run)
-        return run
+        self.event(run, "rollback", f"Rolled back batch: {count} target record(s) restored to their previous state", rolled_back=count)

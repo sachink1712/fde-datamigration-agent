@@ -1,0 +1,5 @@
+Emp No,Name,Email,Aadhaar Number,PAN Card,Bank Account No,IFSC Code,Passport No,Blood Group,Medical Remarks,Joining Date,T-Shirt Size
+A-11,Ishaan Verma,ishaan.verma@nexa.in,2345 6789 0123,ABCDE1234F,001234567890,HDFC0001234,K1234567,B+,Allergy noted,2020-01-15,L
+A-12,Ananya Reddy,ananya.reddy@nexa.in,3456 7890 1234,BCDEF2345G,001234567891,ICIC0002345,L2345678,O-,None,2019-06-03,M
+A-13,Rohan Das,rohan.das@nexa.in,4567 8901 2345,CDEFG3456H,001234567892,SBIN0003456,M3456789,A+,None,2021-09-27,XL
+A-14,Kavya Joshi,kavya.joshi@nexa.in,5678 9012 3456,DEFGH4567I,001234567893,UTIB0004567,N4567890,AB+,Allergy noted,2022-03-11,S

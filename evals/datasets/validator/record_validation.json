@@ -1,0 +1,1286 @@
+[
+  {
+    "id": "V01",
+    "name": "clean_batch",
+    "description": "Eight valid records with a proper reporting tree: NOTHING may be flagged (false-positive control).",
+    "records": [
+      {
+        "employee_id": "E1",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh1@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:1"
+      },
+      {
+        "employee_id": "E2",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair2@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:2",
+        "manager_employee_id": "E1"
+      },
+      {
+        "employee_id": "E3",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj3@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:3",
+        "manager_employee_id": "E1",
+        "phone": "+919845012345"
+      },
+      {
+        "employee_id": "E4",
+        "first_name": "Meena",
+        "last_name": "Iyer",
+        "email": "meena.iyer4@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:4",
+        "manager_employee_id": "E2",
+        "date_of_birth": "1990-05-14"
+      },
+      {
+        "employee_id": "E5",
+        "first_name": "Divya",
+        "last_name": "Menon",
+        "email": "divya.menon5@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:5",
+        "manager_employee_id": "E2",
+        "employment_status": "active"
+      },
+      {
+        "employee_id": "E6",
+        "first_name": "Rahul",
+        "last_name": "Mehta",
+        "email": "rahul.mehta6@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:6",
+        "manager_employee_id": "E3",
+        "end_date": "2023-01-31"
+      },
+      {
+        "employee_id": "E7",
+        "first_name": "Sneha",
+        "last_name": "Pillai",
+        "email": "sneha.pillai7@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:7",
+        "manager_employee_id": "E3",
+        "location": "Pune"
+      },
+      {
+        "employee_id": "E8",
+        "first_name": "Arjun",
+        "last_name": "Das",
+        "email": "arjun.das8@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:8",
+        "manager_employee_id": "E4",
+        "department": "Sales"
+      }
+    ],
+    "expected": [],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V02",
+    "name": "missing_required_values",
+    "description": "Blank required fields are never guessed.",
+    "records": [
+      {
+        "employee_id": "E1",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh1@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:1"
+      },
+      {
+        "employee_id": "E2",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:2"
+      },
+      {
+        "employee_id": "E3",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj3@corp.com",
+        "start_date": "2019-03-15",
+        "_source_row": "hr.csv:3"
+      },
+      {
+        "employee_id": "E4",
+        "email": "meena.iyer4@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:4"
+      }
+    ],
+    "expected": [
+      [
+        "missing_required_value",
+        "E2",
+        "email"
+      ],
+      [
+        "missing_required_value",
+        "E3",
+        "annual_salary"
+      ],
+      [
+        "missing_required_value",
+        "E4",
+        "first_name"
+      ],
+      [
+        "missing_required_value",
+        "E4",
+        "last_name"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V03",
+    "name": "placeholder_records",
+    "description": "Test rows need >=2 independent signals. One weak signal (a real person with a test.com mail) must NOT be flagged.",
+    "records": [
+      {
+        "employee_id": "E1",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh1@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:1"
+      },
+      {
+        "employee_id": "E2",
+        "first_name": "Test",
+        "last_name": "User",
+        "email": "test@example.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:2",
+        "_raw_phone": "9999999999"
+      },
+      {
+        "employee_id": "E3",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "x@test.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:3"
+      },
+      {
+        "employee_id": "E4",
+        "first_name": "Sample",
+        "last_name": "Person",
+        "email": "sample@mailinator.com",
+        "start_date": "1900-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:4"
+      },
+      {
+        "employee_id": "E5",
+        "first_name": "Divya",
+        "last_name": "Menon",
+        "email": "divya.menon5@corp.com",
+        "start_date": "1970-01-01",
+        "annual_salary": 0,
+        "_source_row": "hr.csv:5"
+      }
+    ],
+    "expected": [
+      [
+        "placeholder_record",
+        "E2",
+        "record"
+      ],
+      [
+        "placeholder_record",
+        "E4",
+        "record"
+      ],
+      [
+        "placeholder_record",
+        "E5",
+        "record"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V04",
+    "name": "identity_collision_same_email",
+    "description": "Two ids share an email (rehire / duplicate): flag the LATER one only.",
+    "records": [
+      {
+        "employee_id": "E10",
+        "first_name": "Omar",
+        "last_name": "Sheikh",
+        "email": "a@corp.com",
+        "start_date": "2015-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:10"
+      },
+      {
+        "employee_id": "E11",
+        "first_name": "Lena",
+        "last_name": "Fischer",
+        "email": "a@corp.com",
+        "start_date": "2020-06-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:11"
+      },
+      {
+        "employee_id": "E12",
+        "first_name": "Tara",
+        "last_name": "Bose",
+        "email": "tara.bose12@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:12"
+      }
+    ],
+    "expected": [
+      [
+        "identity_collision",
+        "E11",
+        "employee_id"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V05",
+    "name": "identity_collision_name_dob",
+    "description": "Same name + DOB under two ids is a collision; same name with DIFFERENT DOB (two real people) is not.",
+    "records": [
+      {
+        "employee_id": "E20",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "meena.iyer20@corp.com",
+        "start_date": "2015-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:20",
+        "date_of_birth": "1990-05-14"
+      },
+      {
+        "employee_id": "E21",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "divya.menon21@corp.com",
+        "start_date": "2021-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:21",
+        "date_of_birth": "1990-05-14"
+      },
+      {
+        "employee_id": "E22",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "rahul.mehta22@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:22",
+        "date_of_birth": "1988-01-01"
+      },
+      {
+        "employee_id": "E23",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "sneha.pillai23@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:23",
+        "date_of_birth": "1985-02-02"
+      },
+      {
+        "employee_id": "E24",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "arjun.das24@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:24",
+        "date_of_birth": "1992-09-09"
+      }
+    ],
+    "expected": [
+      [
+        "identity_collision",
+        "E21",
+        "employee_id"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V06",
+    "name": "manager_cycles",
+    "description": "A->B->C->A loop and a self-manager are cycles; an employee merely reporting INTO a cycle is not.",
+    "records": [
+      {
+        "employee_id": "E30",
+        "first_name": "Kiran",
+        "last_name": "Bedi",
+        "email": "kiran.bedi30@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:30",
+        "manager_employee_id": "E31"
+      },
+      {
+        "employee_id": "E31",
+        "first_name": "Isha",
+        "last_name": "Malhotra",
+        "email": "isha.malhotra31@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:31",
+        "manager_employee_id": "E32"
+      },
+      {
+        "employee_id": "E32",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "asha.rao32@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:32",
+        "manager_employee_id": "E30"
+      },
+      {
+        "employee_id": "E33",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh33@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:33",
+        "manager_employee_id": "E30"
+      },
+      {
+        "employee_id": "E34",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair34@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:34"
+      },
+      {
+        "employee_id": "E35",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj35@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:35",
+        "manager_employee_id": "E35"
+      }
+    ],
+    "expected": [
+      [
+        "manager_cycle",
+        "E30",
+        "manager_employee_id"
+      ],
+      [
+        "manager_cycle",
+        "E31",
+        "manager_employee_id"
+      ],
+      [
+        "manager_cycle",
+        "E32",
+        "manager_employee_id"
+      ],
+      [
+        "manager_cycle",
+        "E35",
+        "manager_employee_id"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V07",
+    "name": "unknown_manager",
+    "description": "Manager id absent from every file is flagged; a lower-case id that does exist is fine.",
+    "records": [
+      {
+        "employee_id": "E40",
+        "first_name": "Arjun",
+        "last_name": "Das",
+        "email": "arjun.das40@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:40",
+        "manager_employee_id": "E999"
+      },
+      {
+        "employee_id": "E41",
+        "first_name": "Neha",
+        "last_name": "Kapoor",
+        "email": "neha.kapoor41@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:41",
+        "manager_employee_id": "e42"
+      },
+      {
+        "employee_id": "E42",
+        "first_name": "Omar",
+        "last_name": "Sheikh",
+        "email": "omar.sheikh42@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:42"
+      },
+      {
+        "employee_id": "E43",
+        "first_name": "Lena",
+        "last_name": "Fischer",
+        "email": "lena.fischer43@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:43",
+        "manager_employee_id": "E42"
+      }
+    ],
+    "expected": [
+      [
+        "unknown_manager",
+        "E40",
+        "manager_employee_id"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V08",
+    "name": "implausible_dates",
+    "description": "Too young, too old, start before age 14, end before start, start in the far future.",
+    "records": [
+      {
+        "employee_id": "E50",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair50@corp.com",
+        "start_date": "2021-06-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:50",
+        "date_of_birth": "2019-01-01"
+      },
+      {
+        "employee_id": "E51",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj51@corp.com",
+        "start_date": "2010-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:51",
+        "date_of_birth": "1890-01-01"
+      },
+      {
+        "employee_id": "E52",
+        "first_name": "Meena",
+        "last_name": "Iyer",
+        "email": "meena.iyer52@corp.com",
+        "start_date": "1940-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:52",
+        "date_of_birth": "1925-05-05"
+      },
+      {
+        "employee_id": "E53",
+        "first_name": "Divya",
+        "last_name": "Menon",
+        "email": "divya.menon53@corp.com",
+        "start_date": "2015-05-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:53",
+        "end_date": "2014-01-01"
+      },
+      {
+        "employee_id": "E54",
+        "first_name": "Rahul",
+        "last_name": "Mehta",
+        "email": "rahul.mehta54@corp.com",
+        "start_date": "2099-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:54",
+        "date_of_birth": "1990-01-01"
+      },
+      {
+        "employee_id": "E55",
+        "first_name": "Sneha",
+        "last_name": "Pillai",
+        "email": "sneha.pillai55@corp.com",
+        "start_date": "2015-05-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:55",
+        "date_of_birth": "1990-01-01",
+        "end_date": "2020-01-01"
+      }
+    ],
+    "expected": [
+      [
+        "implausible_value",
+        "E50",
+        "date_of_birth"
+      ],
+      [
+        "implausible_value",
+        "E50",
+        "start_date"
+      ],
+      [
+        "implausible_value",
+        "E51",
+        "date_of_birth"
+      ],
+      [
+        "implausible_value",
+        "E52",
+        "start_date"
+      ],
+      [
+        "implausible_value",
+        "E53",
+        "end_date"
+      ],
+      [
+        "implausible_value",
+        "E54",
+        "start_date"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V09",
+    "name": "invalid_formats_after_cleaning",
+    "description": "Values that are still not in target format: bad email, non-E.164 phone, non-ISO date, impossible date, unknown status, string salary, digit-only name.",
+    "records": [
+      {
+        "employee_id": "E60",
+        "first_name": "Tara",
+        "last_name": "Bose",
+        "email": "asha.rao@corp",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:60"
+      },
+      {
+        "employee_id": "E61",
+        "first_name": "Dev",
+        "last_name": "Patel",
+        "email": "dev.patel61@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:61",
+        "phone": "9845012345"
+      },
+      {
+        "employee_id": "E62",
+        "first_name": "Kiran",
+        "last_name": "Bedi",
+        "email": "kiran.bedi62@corp.com",
+        "start_date": "03-02-2019",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:62"
+      },
+      {
+        "employee_id": "E63",
+        "first_name": "Isha",
+        "last_name": "Malhotra",
+        "email": "isha.malhotra63@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:63",
+        "employment_status": "inactive"
+      },
+      {
+        "employee_id": "E64",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "asha.rao64@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": "50,000",
+        "_source_row": "hr.csv:64"
+      },
+      {
+        "employee_id": "E65",
+        "first_name": "12345",
+        "last_name": "Singh",
+        "email": "vikram.singh65@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:65"
+      },
+      {
+        "employee_id": "E66",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair66@corp.com",
+        "start_date": "2019-02-30",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:66"
+      },
+      {
+        "employee_id": "E67",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj67@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:67",
+        "phone": "+919845012345",
+        "employment_status": "on_leave"
+      }
+    ],
+    "expected": [
+      [
+        "invalid_format",
+        "E60",
+        "email"
+      ],
+      [
+        "invalid_format",
+        "E61",
+        "phone"
+      ],
+      [
+        "invalid_format",
+        "E62",
+        "start_date"
+      ],
+      [
+        "invalid_format",
+        "E63",
+        "employment_status"
+      ],
+      [
+        "invalid_format",
+        "E64",
+        "annual_salary"
+      ],
+      [
+        "invalid_format",
+        "E65",
+        "first_name"
+      ],
+      [
+        "invalid_format",
+        "E66",
+        "start_date"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V10",
+    "name": "salary_sanity",
+    "description": "Negative, zero and absurd (9,000,000,000) salaries.",
+    "records": [
+      {
+        "employee_id": "E70",
+        "first_name": "Rahul",
+        "last_name": "Mehta",
+        "email": "rahul.mehta70@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": -5000,
+        "_source_row": "hr.csv:70"
+      },
+      {
+        "employee_id": "E71",
+        "first_name": "Sneha",
+        "last_name": "Pillai",
+        "email": "sneha.pillai71@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 0,
+        "_source_row": "hr.csv:71"
+      },
+      {
+        "employee_id": "E72",
+        "first_name": "Arjun",
+        "last_name": "Das",
+        "email": "arjun.das72@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 9000000000,
+        "_source_row": "hr.csv:72"
+      },
+      {
+        "employee_id": "E73",
+        "first_name": "Neha",
+        "last_name": "Kapoor",
+        "email": "neha.kapoor73@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 1200000,
+        "_source_row": "hr.csv:73"
+      }
+    ],
+    "expected": [
+      [
+        "implausible_value",
+        "E72",
+        "annual_salary"
+      ],
+      [
+        "invalid_value",
+        "E70",
+        "annual_salary"
+      ],
+      [
+        "invalid_value",
+        "E71",
+        "annual_salary"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V11",
+    "name": "source_conflicts",
+    "description": "Both source files hold plausible but different values: a human must choose.",
+    "records": [
+      {
+        "employee_id": "E80",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "asha.rao80@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:80",
+        "_conflicts": {
+          "start_date": [
+            {
+              "value": "2019-02-03",
+              "source": "a.csv:2"
+            },
+            {
+              "value": "2019-03-02",
+              "source": "b.csv:5"
+            }
+          ]
+        }
+      },
+      {
+        "employee_id": "E81",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh81@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:81",
+        "_conflicts": {
+          "annual_salary": [
+            {
+              "value": 900000,
+              "source": "a.csv:3"
+            },
+            {
+              "value": 950000,
+              "source": "b.csv:6"
+            }
+          ]
+        }
+      },
+      {
+        "employee_id": "E82",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair82@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:82"
+      }
+    ],
+    "expected": [
+      [
+        "source_conflict",
+        "E80",
+        "start_date"
+      ],
+      [
+        "source_conflict",
+        "E81",
+        "annual_salary"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V12",
+    "name": "cell_level_flags",
+    "description": "Low-confidence status, unresolved / ambiguous / dangling manager references. A 0.95-confidence inferred date must NOT be flagged.",
+    "records": [
+      {
+        "employee_id": "E90",
+        "first_name": "Omar",
+        "last_name": "Sheikh",
+        "email": "omar.sheikh90@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:90",
+        "employment_status": "active",
+        "_cells": {
+          "employment_status": {
+            "raw": "actv",
+            "confidence": 0.7,
+            "note": "fuzzy match of 'actv'",
+            "flag": "",
+            "source": "hr.csv:90"
+          }
+        }
+      },
+      {
+        "employee_id": "E91",
+        "first_name": "Lena",
+        "last_name": "Fischer",
+        "email": "lena.fischer91@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:91",
+        "manager_employee_id": "Zed Nobody",
+        "_cells": {
+          "manager_employee_id": {
+            "raw": "Zed Nobody",
+            "confidence": 0.3,
+            "note": "'Zed Nobody' matches no employee",
+            "flag": "unresolved_reference",
+            "source": "hr.csv:91",
+            "candidates": []
+          }
+        }
+      },
+      {
+        "employee_id": "E92",
+        "first_name": "Tara",
+        "last_name": "Bose",
+        "email": "tara.bose92@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:92",
+        "manager_employee_id": "Amit Shah",
+        "_cells": {
+          "manager_employee_id": {
+            "raw": "Amit Shah",
+            "confidence": 0.4,
+            "note": "'Amit Shah' matches several employees",
+            "flag": "ambiguous_reference",
+            "source": "hr.csv:92",
+            "candidates": [
+              "E93",
+              "E94"
+            ]
+          }
+        }
+      },
+      {
+        "employee_id": "E93",
+        "first_name": "Amit",
+        "last_name": "Shah",
+        "email": "dev.patel93@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:93"
+      },
+      {
+        "employee_id": "E94",
+        "first_name": "Amit",
+        "last_name": "Shah",
+        "email": "kiran.bedi94@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:94"
+      },
+      {
+        "employee_id": "E95",
+        "first_name": "Isha",
+        "last_name": "Malhotra",
+        "email": "isha.malhotra95@corp.com",
+        "start_date": "2019-11-05",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:95",
+        "_cells": {
+          "start_date": {
+            "raw": "05/11/2019",
+            "confidence": 0.95,
+            "note": "dd/mm inferred from other dates in the file",
+            "flag": "",
+            "source": "hr.csv:95"
+          }
+        }
+      },
+      {
+        "employee_id": "E96",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "asha.rao96@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:96",
+        "manager_employee_id": "E777",
+        "_cells": {
+          "manager_employee_id": {
+            "raw": "E777",
+            "confidence": 1.0,
+            "note": "E777 does not exist in any source file",
+            "flag": "dangling_reference",
+            "source": "hr.csv:96"
+          }
+        }
+      }
+    ],
+    "expected": [
+      [
+        "ambiguous_reference",
+        "E92",
+        "manager_employee_id"
+      ],
+      [
+        "low_confidence_cleaning",
+        "E90",
+        "employment_status"
+      ],
+      [
+        "unknown_manager",
+        "E96",
+        "manager_employee_id"
+      ],
+      [
+        "unresolved_reference",
+        "E91",
+        "manager_employee_id"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  },
+  {
+    "id": "V13",
+    "name": "run_context_waivers_and_unmapped",
+    "description": "A waived placeholder and a required field that is unmapped (already escalated at column level) must not be re-flagged; a genuinely blank salary still is.",
+    "records": [
+      {
+        "employee_id": "E100",
+        "first_name": "Test",
+        "last_name": "User",
+        "email": "test@example.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:100"
+      },
+      {
+        "employee_id": "E101",
+        "first_name": "Divya",
+        "last_name": "Menon",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:101"
+      },
+      {
+        "employee_id": "E102",
+        "first_name": "Rahul",
+        "last_name": "Mehta",
+        "email": "rahul.mehta102@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:102"
+      },
+      {
+        "employee_id": "E103",
+        "first_name": "Sneha",
+        "last_name": "Pillai",
+        "email": "sneha.pillai103@corp.com",
+        "start_date": "2019-03-15",
+        "_source_row": "hr.csv:103"
+      }
+    ],
+    "expected": [
+      [
+        "missing_required_value",
+        "E103",
+        "annual_salary"
+      ]
+    ],
+    "waivers": [
+      "placeholder_record:E100:record"
+    ],
+    "unmapped_required": [
+      "email"
+    ],
+    "plan": null
+  },
+  {
+    "id": "V14",
+    "name": "tool_plan_gap_is_retryable",
+    "description": "Manager NAME left unresolved and a raw date left unparsed because the plan lacked the tool: still flagged as invalid_format (retryable).",
+    "records": [
+      {
+        "employee_id": "E110",
+        "first_name": "Kiran",
+        "last_name": "Bedi",
+        "email": "kiran.bedi110@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:110"
+      },
+      {
+        "employee_id": "E111",
+        "first_name": "Isha",
+        "last_name": "Malhotra",
+        "email": "isha.malhotra111@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:111",
+        "manager_employee_id": "Rahul Mehta"
+      },
+      {
+        "employee_id": "E112",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "asha.rao112@corp.com",
+        "start_date": "03-02-2019",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:112"
+      }
+    ],
+    "expected": [
+      [
+        "invalid_format",
+        "E111",
+        "manager_employee_id"
+      ],
+      [
+        "invalid_format",
+        "E112",
+        "start_date"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": {
+      "manager_employee_id": [
+        "trim_whitespace"
+      ],
+      "start_date": [
+        "trim_whitespace"
+      ]
+    }
+  },
+  {
+    "id": "V15",
+    "name": "realistic_mixed_batch",
+    "description": "Twelve records, six seeded defects across different rules. Measures precision and recall together.",
+    "records": [
+      {
+        "employee_id": "E120",
+        "first_name": "Arjun",
+        "last_name": "Das",
+        "email": "arjun.das120@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:120"
+      },
+      {
+        "employee_id": "E121",
+        "first_name": "Neha",
+        "last_name": "Kapoor",
+        "email": "neha.kapoor121@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:121",
+        "manager_employee_id": "E120"
+      },
+      {
+        "employee_id": "E122",
+        "first_name": "Omar",
+        "last_name": "Sheikh",
+        "email": "omar.sheikh122@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:122",
+        "manager_employee_id": "E120"
+      },
+      {
+        "employee_id": "E123",
+        "first_name": "Lena",
+        "last_name": "Fischer",
+        "email": "lena.fischer123@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:123",
+        "manager_employee_id": "E121",
+        "phone": "+919845012399"
+      },
+      {
+        "employee_id": "E124",
+        "first_name": "Test",
+        "last_name": "Dummy",
+        "email": "dummy@example.com",
+        "start_date": "1900-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:124"
+      },
+      {
+        "employee_id": "E125",
+        "first_name": "Dev",
+        "last_name": "Patel",
+        "email": "",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:125"
+      },
+      {
+        "employee_id": "E126",
+        "first_name": "Kiran",
+        "last_name": "Bedi",
+        "email": "kiran.bedi126@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:126",
+        "manager_employee_id": "E888"
+      },
+      {
+        "employee_id": "E127",
+        "first_name": "Isha",
+        "last_name": "Malhotra",
+        "email": "dup@corp.com",
+        "start_date": "2016-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:127"
+      },
+      {
+        "employee_id": "E128",
+        "first_name": "Asha",
+        "last_name": "Rao",
+        "email": "dup@corp.com",
+        "start_date": "2022-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:128"
+      },
+      {
+        "employee_id": "E129",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "email": "vikram.singh129@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:129",
+        "_conflicts": {
+          "annual_salary": [
+            {
+              "value": 700000,
+              "source": "a.csv:9"
+            },
+            {
+              "value": 710000,
+              "source": "b.csv:9"
+            }
+          ]
+        }
+      },
+      {
+        "employee_id": "E130",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "email": "priya.nair130@corp.com",
+        "start_date": "1995-01-01",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:130",
+        "date_of_birth": "1990-01-01"
+      },
+      {
+        "employee_id": "E131",
+        "first_name": "Karthik",
+        "last_name": "Raj",
+        "email": "karthik.raj131@corp.com",
+        "start_date": "2019-03-15",
+        "annual_salary": 900000,
+        "_source_row": "hr.csv:131",
+        "manager_employee_id": "E122"
+      }
+    ],
+    "expected": [
+      [
+        "identity_collision",
+        "E128",
+        "employee_id"
+      ],
+      [
+        "implausible_value",
+        "E130",
+        "start_date"
+      ],
+      [
+        "missing_required_value",
+        "E125",
+        "email"
+      ],
+      [
+        "placeholder_record",
+        "E124",
+        "record"
+      ],
+      [
+        "source_conflict",
+        "E129",
+        "annual_salary"
+      ],
+      [
+        "unknown_manager",
+        "E126",
+        "manager_employee_id"
+      ]
+    ],
+    "waivers": [],
+    "unmapped_required": [],
+    "plan": null
+  }
+]
